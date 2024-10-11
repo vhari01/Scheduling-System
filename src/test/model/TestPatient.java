@@ -45,9 +45,19 @@ public class TestPatient extends TestClass {
 
     @Test
     void testToCompareHigherEmergencyFirst() {
-        assertTrue(p2.compareTo(p3) < 0); // why not -1
-        assertTrue(p3.compareTo(p2) > 0); // whhy not 1
-    }
+        assertEquals(-1, p2.compareTo(p3) ); 
+        assertEquals(1, p3.compareTo(p2) ); 
+    }   
+
+    @Test
+    void testToCompareSameAppointmentDate() {
+        p2.setAppointmentDate(LocalDate.of(2024, 10, 13));
+        p3.setAppointmentDate(LocalDate.of(2024, 10, 13));
+    
+        assertEquals(-1, p2.compareTo(p3)); 
+}
+
+
 
     @Test
     void testToCompareForDifferentSpecialist() {
