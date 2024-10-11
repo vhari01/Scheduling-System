@@ -3,7 +3,7 @@ package model;
 
 import java.time.LocalDate;
 
-public class Patient {
+public class Patient implements Comparable<Patient> {
 
     //attributes
     private String patientName;
@@ -75,6 +75,32 @@ public class Patient {
     public LocalDate getAppointementDate(){
         return this.appointmentDate;
     }
+
+    //REQUIRES: Other patient != null
+    //EFFECTS : - Returns -1 if this patient's emergency level is higher than the other patient's emergency level 
+//               and both share the same appointment date and specialist.
+//              - Returns 1 if this patient's emergency level is lower than the other patient's emergency level 
+//               and both share the same appointment date and specialist.
+//              - Returns 0 if the emergency levels are equal and both share the same appointment date and specialist,
+//               or if they do not share the same appointment date or specialist.
+
+@Override
+public int compareTo(Patient other) {
+
+    if(this.appointmentDate.equals(other.appointmentDate) && this.specialistRequired.equals(other.specialistRequired)){
+        if (this.levelOfEmergency > other.levelOfEmergency){
+            return -1;
+        }else if(this.levelOfEmergency < other.levelOfEmergency){
+            return 1;
+        }else {
+            return 0;
+        }
+    
+    }else{
+        return 0;
+    }
+}
+
 
 
 }
