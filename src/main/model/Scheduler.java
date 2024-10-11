@@ -43,7 +43,7 @@ public class Scheduler {
 
     public ArrayList<Patient> sortPatientsByPriority(){
         ArrayList <Patient> patientsSorted = new ArrayList<>(listOfPatients);    //creates a copy of the original list
-        Collections.sort(patientsSorted, Collections.reverseOrder() );           //sorts it out using compare to and aligns in descending order
+        Collections.sort(patientsSorted);           //sorts it out using compare to 
         return patientsSorted;
          
     }
@@ -51,7 +51,7 @@ public class Scheduler {
     //REQUIRES: arraylist of patients should not be empty
     //MODIFIES: this
     //EFFECTS: removes the highest priority patient from the list
-    
+
     public void treatNextPatient(){
         if(!listOfPatients.isEmpty()){
         ArrayList <Patient> sortedPatients = sortPatientsByPriority();  //gets the sorted arraylist
