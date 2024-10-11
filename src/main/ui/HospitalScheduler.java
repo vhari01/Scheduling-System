@@ -99,8 +99,6 @@ public class HospitalScheduler {
         String dateInput = sc.nextLine();
         LocalDate appointmentDate = LocalDate.parse(dateInput);
 
-        System.out.println(" ");
-        
         Patient newPatient = new Patient(name, age, insurance, emergencyLevel, specialist, appointmentDate);
         schedule.addPatient(newPatient);
         System.out.println("Patient added successfully!");
