@@ -67,23 +67,34 @@ public class HospitalScheduler {
 
         System.out.println("Enter patient's name:");
         String name = sc.nextLine();
+        System.out.println(" ");
         
         System.out.println("Enter patient's age:");
         int age = sc.nextInt();
+        System.out.println(" ");
+
 
         System.out.println("Does the patient have insurance? (true/false)");
         boolean insurance = sc.nextBoolean();
+        System.out.println(" ");
+
 
         System.out.println("Enter level of emergency (1 to 5):");
         int emergencyLevel = sc.nextInt();
+        System.out.println(" ");
+
 
         sc.nextLine(); // consume newline
         System.out.println("Enter specialist required:");
         String specialist = sc.nextLine();
+        System.out.println(" ");
+
 
         System.out.println("Enter appointment date (YYYY-MM-DD):");
         String dateInput = sc.nextLine();
         LocalDate appointmentDate = LocalDate.parse(dateInput);
+        System.out.println(" ");
+
 
         Patient newPatient = new Patient(name, age, insurance, emergencyLevel, specialist, appointmentDate);
         schedule.addPatient(newPatient);
