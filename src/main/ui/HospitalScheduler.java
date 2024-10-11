@@ -81,7 +81,7 @@ public class HospitalScheduler {
         System.out.println("Enter specialist required:");
         String specialist = sc.nextLine();
 
-        System.out.println("Enter appointment date (YYYY,MM,DD):");
+        System.out.println("Enter appointment date (YYYY-MM-DD):");
         String dateInput = sc.nextLine();
         LocalDate appointmentDate = LocalDate.parse(dateInput);
 
