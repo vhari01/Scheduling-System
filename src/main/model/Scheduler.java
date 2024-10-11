@@ -55,13 +55,9 @@ public class Scheduler {
         listOfPatients.remove(nextPatient);
         }             
     }
-    //REQUIRES: List should not be empty
-    //EFFECTS: prints the list
-    public void printListOfPatients(){
-        if(!listOfPatients.isEmpty()){
-            printListOfPatients();
-        }
-
+    
+    public ArrayList<Patient> getScheduledPatients() {
+        return this.listOfPatients; 
     }
     
     
