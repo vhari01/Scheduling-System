@@ -6,19 +6,17 @@ import java.util.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
-
 public class TestScheduler extends TestClass {
-    public Scheduler scheduler;
+    private Scheduler scheduler;
 
     @BeforeEach
-    void runBefore(){
+    void runBefore() {
         super.runBefore();
-        scheduler= new Scheduler();
+        scheduler = new Scheduler();
     }
 
     @Test
-   public void testAddPatient(){
+    public void testAddPatient() {
         scheduler.addPatient(p1);
         scheduler.addPatient(p2);
         scheduler.addPatient(p3);
@@ -31,7 +29,7 @@ public class TestScheduler extends TestClass {
     }
 
     @Test
-   public void testCancelAppointment(){
+    public void testCancelAppointment() {
         scheduler.addPatient(p1);
         assertTrue(scheduler.cancelAppointment("Max", 23, LocalDate.of(2024, 10, 13), "Orthopedic"));
         assertFalse(scheduler.cancelAppointment("Max", 23, LocalDate.of(2024, 10, 13), "Orthopedic"));
@@ -39,14 +37,13 @@ public class TestScheduler extends TestClass {
     }
 
     @Test
-   public void testNonExistingAppointmentCancel(){
+    public void testNonExistingAppointmentCancel() {
         assertFalse(scheduler.cancelAppointment("Jenna", 23, LocalDate.of(2024, 10, 13), "Neurology"));
 
     }
 
     @Test
-   public void testSortPatientsByPriority(){
-        
+    public void testSortPatientsByPriority() {
 
         scheduler.addPatient(p1);
         scheduler.addPatient(p5);
@@ -59,26 +56,26 @@ public class TestScheduler extends TestClass {
     }
 
     @Test
-    public void testTreatNextPatient(){
+    public void testTreatNextPatient() {
         scheduler.addPatient(p1);
         scheduler.addPatient(p4);
 
         scheduler.treatNextPatient();
 
-        assertEquals(1,scheduler.getScheduledPatients().size());
+        assertEquals(1, scheduler.getScheduledPatients().size());
         assertFalse(scheduler.getScheduledPatients().contains(p1));
         assertTrue(scheduler.getScheduledPatients().contains(p4));
 
         scheduler.treatNextPatient();
 
-        assertEquals(0,scheduler.getScheduledPatients().size());
+        assertEquals(0, scheduler.getScheduledPatients().size());
         assertFalse(scheduler.getScheduledPatients().contains(p4));
 
     }
 
     @Test
-    public void testTreatPatientWhenListEmpty(){
+    public void testTreatPatientWhenListEmpty() {
         scheduler.treatNextPatient();
-        assertEquals(0,scheduler.getScheduledPatients().size());
+        assertEquals(0, scheduler.getScheduledPatients().size());
     }
 }

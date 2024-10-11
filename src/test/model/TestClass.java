@@ -1,10 +1,8 @@
 package model;
 
-
-import model.Patient;
 import org.junit.jupiter.api.BeforeEach;
 import java.time.LocalDate;
-import static org.junit.jupiter.api.Assertions.*;
+
 
 public class TestClass{
     protected Patient p1;

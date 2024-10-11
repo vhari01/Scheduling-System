@@ -7,13 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import java.time.LocalDate;
 
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
 public class TestPatient extends TestClass {
-    
-
 
     @Test
     void testConstructor() {
@@ -24,37 +20,38 @@ public class TestPatient extends TestClass {
         assertEquals(3, p1.getLevelOfEmergency());
         assertEquals(LocalDate.of(2024, 10, 13), p1.getAppointementDate());
     }
+
     @Test
-    void testSetters(){
+    void testSetters() {
         p1.setPatientName("Hex");
         p1.setAge(19);
         p1.setInsuranceStatus(false);
         p1.setLevelOfEmergency(5);
         p1.setspecialistRequired("Dermatologist");
-        p1.setAppointmentDate(LocalDate.of(2024,10,17));
+        p1.setAppointmentDate(LocalDate.of(2024, 10, 17));
 
         assertEquals("Hex", p1.getPatientName());
         assertEquals(19, p1.getAge());
         assertFalse(p1.getInsuranceStatus());
         assertEquals(5, p1.getLevelOfEmergency());
         assertEquals("Dermatologist", p1.getspecialistRequired());
-        assertEquals(LocalDate.of(2024,10,17), p1.getAppointementDate());
-    }
-    @Test
-    void testToCompareSameEmergencySameSpecialist(){
-       assertEquals(0, p1.compareTo(p4)); 
+        assertEquals(LocalDate.of(2024, 10, 17), p1.getAppointementDate());
     }
 
     @Test
-    void testToCompareHigherEmergencyFirst(){
-       assertTrue(p2.compareTo(p3)<0);  //why not -1
-       assertTrue(p3.compareTo(p2)>0);  // whhy not 1
+    void testToCompareSameEmergencySameSpecialist() {
+        assertEquals(0, p1.compareTo(p4));
     }
 
-    @Test 
-    void testToCompareForDifferentSpecialist(){
-        assertEquals(0,p1.compareTo(p3));
+    @Test
+    void testToCompareHigherEmergencyFirst() {
+        assertTrue(p2.compareTo(p3) < 0); // why not -1
+        assertTrue(p3.compareTo(p2) > 0); // whhy not 1
     }
 
+    @Test
+    void testToCompareForDifferentSpecialist() {
+        assertEquals(0, p1.compareTo(p3));
+    }
 
 }
