@@ -11,19 +11,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
-public class TestPatient {
-    private Patient p1;
-    private Patient p2;
-    private Patient p3;
-    private Patient p4;
-
-    @BeforeEach
-    void runBefore(){
-        p1 = new Patient("Max",23, true, 3, "Orthopedic", LocalDate.of(2024, 10, 13));
-        p2 = new Patient("Jack",50, false, 5, "Cardiologist", LocalDate.of(2024, 10, 13));
-        p3 = new Patient("Gil",38, true, 3, "Cardiologist", LocalDate.of(2024, 10, 13));
-        p4 = new Patient("cacy",32, true, 3, "Orthopedic", LocalDate.of(2024, 10, 13));
-    }
+public class TestPatient extends TestClass {
+    
 
 
     @Test
@@ -58,8 +47,8 @@ public class TestPatient {
 
     @Test
     void testToCompareHigherEmergencyFirst(){
-       assertTrue(p2.compareTo(p3)<0);
-       assertTrue(p3.compareTo(p2)>0);
+       assertTrue(p2.compareTo(p3)<0);  //why not -1
+       assertTrue(p3.compareTo(p2)>0);  // whhy not 1
     }
 
     @Test 
