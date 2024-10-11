@@ -3,11 +3,12 @@
 ## Fetches data from patients and manages appointment and more
 
 List of things I expect the program to do:
-- As a user, I should be able to assign myself a seriousness level so that I can get a priority during my appoitment
+- As a user, I should be able to assign myself a seriousness level so that I can get a priority during my appoitment.
 - As a user, I want to be able to add my name, age, name of the insurance that I have.
-- As a user, I want the application to assign me a specialist depending on the medical problem that I have.
-- As a user, I want tot be able to reschedule or cancel an appointment
-- The application 
+- As a user, I want the application to assign myself a specialist depending on the medical problem that I have.
+- As a user, I want tot be able to cancel an appointment.
+- As a user, the application should remove the treated patients from the priority list.
+- As a user, the application should show me the number of people in queue before.
 
 
  
