@@ -26,50 +26,55 @@ public class Patient {
 
      //Getters and setters for patient's name
      public void setPatientName(String name){
+        this.patientName = name;
     }
     public String getPatientName(){
-        return null;
+        return this.patientName;
     }
 
     //Getters and setters for patient's age
     public void setAge(int age){
-        
+        this.patientAge = age;
     }
     public int getAge(){
-        return 0;
+        return this.patientAge;
     }
+
 
     //Getters and setters for patient's insurance status
     public void setInsuranceStatus(boolean insurance){
-    
+        this.insuranceStatus = insurance;
     }
     public boolean getInsuranceStatus(){
-        return false;
+        return this.insuranceStatus;
     }
+
 
     //Getters and setters for patient's level of emergency
     public void setLevelOfEmergency(int emergencyLevel){
-        
+        this.levelOfEmergency = emergencyLevel;
     }
     public int getLevelOfEmergency(){
-        return 0;
+        return this.levelOfEmergency;
     }
+
 
     //Getters and setters for specialist required by patient 
     public void setspecialistRequired(String neededSpecialist){
-           
+        this.specialistRequired = neededSpecialist;   
     }
     public String getspecialistRequired(){
-        return null;
-
+        return this.specialistRequired;
     }
+
 
     //Getters and setters for patient's appointment date
     public void setAppointmentDate(LocalDate date){
-          
+        this.appointmentDate = date;   
     }
     public LocalDate getAppointementDate(){
-        return null;
+        return this.appointmentDate;
     }
+
 
 }
