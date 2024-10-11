@@ -37,6 +37,30 @@ public class TestScheduler extends TestClass {
     }
 
     @Test
+    public void testCancelAppointmentNameMismatch() {
+        scheduler.addPatient(p1); // Assuming p1 has "Max" as name
+        assertFalse(scheduler.cancelAppointment("John", 23, LocalDate.of(2024, 10, 13), "Orthopedic"));
+    }
+
+    @Test
+    public void testCancelAppointmentAgeMismatch() {
+        scheduler.addPatient(p1); // Assuming p1 is 23 years old
+        assertFalse(scheduler.cancelAppointment("Max", 25, LocalDate.of(2024, 10, 13), "Orthopedic"));
+    }
+
+    @Test
+    public void testCancelAppointmentDateMismatch() {
+        scheduler.addPatient(p1); // Assuming p1 has an appointment on 2024-10-13
+        assertFalse(scheduler.cancelAppointment("Max", 23, LocalDate.of(2024, 10, 15), "Orthopedic"));
+    }
+
+    @Test
+    public void testCancelAppointmentSpecialistMismatch() {
+        scheduler.addPatient(p1); // Assuming p1 requires "Orthopedic"
+        assertFalse(scheduler.cancelAppointment("Max", 23, LocalDate.of(2024, 10, 13), "Neurology"));
+    }
+
+    @Test
     public void testNonExistingAppointmentCancel() {
         assertFalse(scheduler.cancelAppointment("Jenna", 23, LocalDate.of(2024, 10, 13), "Neurology"));
 
