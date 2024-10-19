@@ -10,11 +10,11 @@ public class Specialist {
         
     }
 
-    public void setSpecialist(String specialistName){
+    public void setSpecialistName(String specialistName){
         this.specialistName = specialistName;
     }
 
-    public String getSpecialist(){
+    public String getSpecialistName(){
         return  this.specialistName;
     }
 
