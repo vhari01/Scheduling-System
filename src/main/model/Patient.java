@@ -8,12 +8,12 @@ there is a constructor and all the attributes have their getters and setters8*/
 public class Patient implements Comparable<Patient> {
 
     // attributes
-    private String patientName; // name of the patient
-    private int patientAge; // age of the patient
-    private boolean insuranceStatus; // if the patient has insuranc or not
-    private int levelOfEmergency; // Seriousness level of patient's problem (1 being the leaset and 5 being the
-                                  // highest)
-    private String specialistRequired; // Type of specialist required
+    private String patientName;     // name of the patient
+    private int patientAge;         // age of the patient
+    private boolean insuranceStatus;   // if the patient has insuranc or not
+    private int levelOfEmergency;      // Seriousness level of patient's problem (1 being the leaset and 5 being the
+                                    // highest)
+    private Specialist specialistRequired; // Specialist object for type of specialist
     private LocalDate appointmentDate; // Date of the booked appointement
 
     // REQUIRES: A String name, age > 0, insurance, 1>= emergency level <=5, a
@@ -21,7 +21,7 @@ public class Patient implements Comparable<Patient> {
     // EFFECTS : Creates a patient object with name, age, insurance, emergency level
     // and specialist type
 
-    public Patient(String name, int age, boolean insurance, int emergencyLevel, String neededSpecialist,
+    public Patient(String name, int age, boolean insurance, int emergencyLevel, Specialist neededSpecialist,
             LocalDate date) {
         this.patientName = name;
         this.patientAge = age;
@@ -68,11 +68,11 @@ public class Patient implements Comparable<Patient> {
     }
 
     // Getters and setters for specialist required by patient
-    public void setspecialistRequired(String neededSpecialist) {
+    public void setspecialistRequired(Specialist neededSpecialist) {
         this.specialistRequired = neededSpecialist;
     }
 
-    public String getspecialistRequired() {
+    public Specialist getspecialistRequired() {
         return this.specialistRequired;
     }
 
@@ -98,7 +98,6 @@ public class Patient implements Comparable<Patient> {
 
     @Override
     public int compareTo(Patient other) {
-
         if (this.appointmentDate.equals(other.appointmentDate)
                 && this.specialistRequired.equals(other.specialistRequired)) {
             if (this.levelOfEmergency > other.levelOfEmergency) {
