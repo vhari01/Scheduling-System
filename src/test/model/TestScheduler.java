@@ -27,43 +27,40 @@ public class TestScheduler extends TestClass {
         assertEquals(p3, scheduler.getScheduledPatients().get(2));
         assertEquals(p4, scheduler.getScheduledPatients().get(3));
     }
-
     @Test
     public void testCancelAppointment() {
-        scheduler.addPatient(p1);
-        assertTrue(scheduler.cancelAppointment("Max", 23, LocalDate.of(2024, 10, 13), "Orthopedic"));
-        assertFalse(scheduler.cancelAppointment("Max", 23, LocalDate.of(2024, 10, 13), "Orthopedic"));
-
+        String bookingId = scheduler.addPatient(p1); // Add p1 and get the booking ID
+        assertTrue(scheduler.cancelAppointment(bookingId)); // Cancel using the booking ID
+        assertFalse(scheduler.cancelAppointment(bookingId)); // Canceling again should return false
     }
 
     @Test
     public void testCancelAppointmentNameMismatch() {
-        scheduler.addPatient(p1); // Assuming p1 has "Max" as name
-        assertFalse(scheduler.cancelAppointment("John", 23, LocalDate.of(2024, 10, 13), "Orthopedic"));
+        String bookingId = scheduler.addPatient(p1); // Assuming p1 has "Max" as name
+        assertFalse(scheduler.cancelAppointment("InvalidBookingId")); // Pass an invalid booking ID
     }
 
     @Test
     public void testCancelAppointmentAgeMismatch() {
-        scheduler.addPatient(p1); // Assuming p1 is 23 years old
-        assertFalse(scheduler.cancelAppointment("Max", 25, LocalDate.of(2024, 10, 13), "Orthopedic"));
+        String bookingId = scheduler.addPatient(p1); // Assuming p1 is 23 years old
+        assertFalse(scheduler.cancelAppointment("InvalidBookingId")); // Pass an invalid booking ID
     }
 
     @Test
     public void testCancelAppointmentDateMismatch() {
-        scheduler.addPatient(p1); // Assuming p1 has an appointment on 2024-10-13
-        assertFalse(scheduler.cancelAppointment("Max", 23, LocalDate.of(2024, 10, 15), "Orthopedic"));
+        String bookingId = scheduler.addPatient(p1); // Assuming p1 has an appointment on 2024-10-13
+        assertFalse(scheduler.cancelAppointment("InvalidBookingId")); // Pass an invalid booking ID
     }
 
     @Test
     public void testCancelAppointmentSpecialistMismatch() {
-        scheduler.addPatient(p1); // Assuming p1 requires "Orthopedic"
-        assertFalse(scheduler.cancelAppointment("Max", 23, LocalDate.of(2024, 10, 13), "Neurology"));
+        String bookingId = scheduler.addPatient(p1); // Assuming p1 requires "Orthopedic"
+        assertFalse(scheduler.cancelAppointment("InvalidBookingId")); // Pass an invalid booking ID
     }
 
     @Test
     public void testNonExistingAppointmentCancel() {
-        assertFalse(scheduler.cancelAppointment("Jenna", 23, LocalDate.of(2024, 10, 13), "Neurology"));
-
+        assertFalse(scheduler.cancelAppointment("NonExistingBookingId")); // Use a booking ID that doesn't exist
     }
 
     @Test
