@@ -8,10 +8,12 @@ import java.time.*;
 
 public class Scheduler {
     private ArrayList<Patient> listOfPatients;
+    private ArrayList<String> bookingIds;
 
     // EFFECTS: Creates a generic arraylist of type patients
     public Scheduler() {
         this.listOfPatients = new ArrayList<Patient>();
+        this.bookingIds = new ArrayList<String>();
 
     }
     // REQUIRES: patient != null
@@ -22,7 +24,7 @@ public class Scheduler {
         listOfPatients.add(p1);
     }
 
-    // REQUIRES: patient name, patient age, specialistrequired should not be null
+    // REQUIRES: patient name, patient age, specialist required should not be null
     // and date >= present date
     // MODIFIES: this
     // EFFECTS: removes the patient from patientList if a patient with the given
