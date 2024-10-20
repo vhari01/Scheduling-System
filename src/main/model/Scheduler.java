@@ -20,8 +20,22 @@ public class Scheduler {
     // MODIFIES: this
     // EFFECTS: adds the given patient to the patientList.
 
-    public void addPatient(Patient p1) {
+    public String addPatient(Patient p1) {
+        String bookingId = generateBookingId();
+        p1.setBookingId(bookingId);
         listOfPatients.add(p1);
+
+        return bookingId;  
+    }
+    //EFFECTS : Generates a random unique booking id
+    public String generateBookingId(){
+        String bookingId;
+
+        do {
+            bookingId = String.valueOf((int) (Math.random() * 900000) );  // Generate random 6-digit number
+        } while (bookingIds.contains(bookingId)); // Ensure the booking ID is unique
+        bookingIds.add(bookingId); // Add the new booking ID to the list
+        return bookingId;
     }
 
     // REQUIRES: patient name, patient age, specialist required should not be null
@@ -33,17 +47,19 @@ public class Scheduler {
     // canceled,
     // otherwise returns false.
 
-    public boolean cancelAppointment(String name, int age, LocalDate appointmentDate, String specialistRequired) {
-        for (Patient patient : listOfPatients) {
-            if (patient.getPatientName().equals(name) && patient.getAge() == age
-                    && patient.getAppointementDate().equals(appointmentDate)
-                    && patient.getspecialistRequired().equals(specialistRequired)) {
-                listOfPatients.remove(patient);
+    public boolean cancelAppointment(String bookingId) {
+        Iterator<Patient> itr = listOfPatients.iterator();  
+        while(itr.hasNext()){
+            Patient p1 = itr.next();
+            if(p1.getBookingId()==bookingId){
+                itr.remove();
+                bookingIds.remove(bookingId);
                 return true;
             }
+        }    
+        return false; 
 
-        }
-        return false;
+       
 
     }
 
