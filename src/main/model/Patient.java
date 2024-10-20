@@ -15,6 +15,7 @@ public class Patient implements Comparable<Patient> {
                                     // highest)
     private Specialist specialistRequired; // Specialist object for type of specialist
     private LocalDate appointmentDate; // Date of the booked appointement
+    private String bookingId;  //booking id for the patient
 
     // REQUIRES: A String name, age > 0, insurance, 1>= emergency level <=5, a
     // specialist type and a date >=current date
@@ -22,13 +23,14 @@ public class Patient implements Comparable<Patient> {
     // and specialist type
 
     public Patient(String name, int age, boolean insurance, int emergencyLevel, Specialist neededSpecialist,
-            LocalDate date) {
+            LocalDate date, String bookingId) {
         this.patientName = name;
         this.patientAge = age;
         this.insuranceStatus = insurance;
         this.levelOfEmergency = emergencyLevel;
         this.specialistRequired = neededSpecialist;
         this.appointmentDate = date;
+        this.bookingId = bookingId;
     }
 
     // Getters and setters for patient's name
@@ -83,6 +85,10 @@ public class Patient implements Comparable<Patient> {
 
     public LocalDate getAppointementDate() {
         return this.appointmentDate;
+    }
+    
+    public String getBookingId() {
+        return bookingId;
     }
 
     // REQUIRES: Other patient != null
