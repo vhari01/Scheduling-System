@@ -18,7 +18,7 @@ public class TestPatient extends TestClass {
         assertTrue(p1.getInsuranceStatus());
         assertEquals(Orthopedic, p1.getspecialistRequired());
         assertEquals(3, p1.getLevelOfEmergency());
-        assertEquals(LocalDate.of(2024, 10, 13), p1.getAppointementDate());
+        assertEquals(LocalDate.of(2024, 12, 13), p1.getAppointementDate());
     }
 
     @Test
@@ -65,4 +65,19 @@ public class TestPatient extends TestClass {
         assertEquals(0, p1.compareTo(p3));
     }
 
+    @Test
+    public void testCompareToDifferentDates() {
+        Patient p1 = new Patient("Alice", 25, true, 5, new Specialist("Cardiologist"), LocalDate.of(2024, 12, 14));
+        Patient p2 = new Patient("Bob", 30, true, 5, new Specialist("Cardiologist"), LocalDate.of(2024, 12, 15));
+        
+        assertEquals(0, p1.compareTo(p2)); 
+    }
+    
+    @Test
+    public void testCompareToDifferentSpecialists() {
+        Patient p1 = new Patient("Alice", 25, true, 5, new Specialist("Cardiologist"), LocalDate.of(2024, 12, 14));
+        Patient p2 = new Patient("Bob", 30, true, 5, new Specialist("Orthopedic"), LocalDate.of(2024, 12, 14));
+        
+        assertEquals(0, p1.compareTo(p2)); 
+    }
 }
