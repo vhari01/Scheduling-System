@@ -22,15 +22,14 @@ public class Patient implements Comparable<Patient> {
     // EFFECTS : Creates a patient object with name, age, insurance, emergency level
     // and specialist type
 
-    public Patient(String name, int age, boolean insurance, int emergencyLevel, Specialist neededSpecialist,
-            LocalDate date, String bookingId) {
+    public Patient(String name, int age, boolean insurance, int emergencyLevel, Specialist neededSpecialist, LocalDate date) {
         this.patientName = name;
         this.patientAge = age;
         this.insuranceStatus = insurance;
         this.levelOfEmergency = emergencyLevel;
         this.specialistRequired = neededSpecialist;
         this.appointmentDate = date;
-        this.bookingId = bookingId;
+        // this.bookingId = bookingId;
     }
 
     // Getters and setters for patient's name
@@ -86,7 +85,7 @@ public class Patient implements Comparable<Patient> {
     public LocalDate getAppointementDate() {
         return this.appointmentDate;
     }
-    
+
     public void setBookingId(String bookingId) {
         this.bookingId = bookingId;
     }
