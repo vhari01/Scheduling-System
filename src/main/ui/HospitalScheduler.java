@@ -6,7 +6,6 @@ import model.Specialist;
 
 import java.util.*;
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 
 public class HospitalScheduler {
 
@@ -151,7 +150,7 @@ public class HospitalScheduler {
         LocalDate appointmentDate;
         try {
             appointmentDate = LocalDate.parse(dateInput);
-        } catch (DateTimeParseException e) {
+        } catch (Exception e) {
             System.out.println("Invalid date format. Please enter the date in YYYY-MM-DD format.");
             return;
         }
