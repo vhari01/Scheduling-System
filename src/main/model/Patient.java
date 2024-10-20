@@ -87,6 +87,10 @@ public class Patient implements Comparable<Patient> {
         return this.appointmentDate;
     }
     
+    public void setBookingId(String bookingId) {
+        this.bookingId = bookingId;
+    }
+
     public String getBookingId() {
         return bookingId;
     }
