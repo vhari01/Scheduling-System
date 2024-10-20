@@ -2,19 +2,47 @@ package ui;
 
 import model.Patient;
 import model.Scheduler;
+import model.Specialist;
 
 import java.util.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 public class HospitalScheduler {
 
     private Scheduler schedule;
-    Scanner sc;
+    private List <Specialist> specialistAvailable;
+    private Scanner sc;
 
     public HospitalScheduler() {
         schedule = new Scheduler();
+        specialistAvailable = createSpecialists();
         sc = new Scanner(System.in);
         runHospital();
+    }
+
+    public List <Specialist> createSpecialists(){
+        List<Specialist> specialists = new ArrayList<>();
+        specialists.add(new Specialist("Cardiologist"));
+        specialists.add(new Specialist("Dermatologist"));
+        specialists.add(new Specialist("Endocrinologist"));
+        specialists.add(new Specialist("Gastroenterologist"));
+        specialists.add(new Specialist("Infectiologist"));
+        specialists.add(new Specialist("Nephrologist"));
+        specialists.add(new Specialist("Neurologist"));
+        specialists.add(new Specialist("Orthopedist"));
+        specialists.add(new Specialist("Psychiatrist"));
+        specialists.add(new Specialist("Endocrinologist"));
+        specialists.add(new Specialist("Rheumatologist"));
+        specialists.add(new Specialist("Pulmonologist"));
+        specialists.add(new Specialist("Radiologist"));
+        specialists.add(new Specialist("Hematologist"));
+        specialists.add(new Specialist("Immunologist"));
+        specialists.add(new Specialist("Ophthalmologist"));
+        specialists.add(new Specialist("Pediatrician"));
+
+        return specialists;
+
     }
 
     // EFFECTS: Runs the hospital scheduler app
@@ -72,6 +100,7 @@ public class HospitalScheduler {
 
         System.out.println("Enter patient's name:");
         String name = sc.nextLine();
+
         System.out.println(" ");
 
         System.out.println("Enter patient's age:");
@@ -90,14 +119,42 @@ public class HospitalScheduler {
         System.out.println(" ");
 
         sc.nextLine(); // consume newline
-        System.out.println("Enter specialist required:");
-        String specialist = sc.nextLine();
 
-        System.out.println(" ");
+        System.out.println("Select a specialist by entering the corresponding letter:");
+        char specialistLetter = 'a';
+        for(int i = 0; i<specialistAvailable.size(); i++){
+            System.out.println(specialistLetter + "->" + specialistAvailable.get(i).getSpecialistName());
+            specialistLetter++;
+        }
+        String specialistChoice = sc.next().toLowerCase();
+        int specialistIndex = specialistChoice.charAt(0) - 'a';
+
+        if (specialistIndex < 0 || specialistIndex >= specialistAvailable.size()) {
+            System.out.println("Invalid specialist selection. Please try again.");
+            return;
+        }
+
+        Specialist specialist = specialistAvailable.get(specialistIndex);
+
+        sc.nextLine();
+        
 
         System.out.println("Enter appointment date (YYYY-MM-DD):");
+
         String dateInput = sc.nextLine();
-        LocalDate appointmentDate = LocalDate.parse(dateInput);
+
+        if (dateInput.isEmpty()) {
+        System.out.println("Appointment date cannot be empty. Please enter a valid date.");
+        return;
+        }
+
+        LocalDate appointmentDate;
+        try {
+            appointmentDate = LocalDate.parse(dateInput);
+        } catch (DateTimeParseException e) {
+            System.out.println("Invalid date format. Please enter the date in YYYY-MM-DD format.");
+            return;
+        }
 
         Patient newPatient = new Patient(name, age, insurance, emergencyLevel, specialist, appointmentDate);
         schedule.addPatient(newPatient);
