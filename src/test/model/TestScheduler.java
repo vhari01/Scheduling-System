@@ -99,4 +99,52 @@ public class TestScheduler extends TestClass {
         scheduler.treatNextPatient();
         assertEquals(0, scheduler.getScheduledPatients().size());
     }
+
+    @Test
+    public void testRescheduleAppointmentPastDate() {
+        String bookingId = scheduler.addPatient(p1);
+        LocalDate pastDate = LocalDate.of(2023, 12, 13);
+        assertFalse(scheduler.rescheduleAppointment(bookingId, pastDate)); 
+    }
+
+    @Test
+    public void testRescheduleAppointment() {
+        String bookingId = scheduler.addPatient(p1);
+        LocalDate newDate = LocalDate.of(2024, 12, 21);
+        assertTrue(scheduler.rescheduleAppointment(bookingId, newDate)); 
+        assertEquals(newDate, p1.getAppointementDate());
+    }
+    @Test
+    public void testGenerateBookingIdWithDuplicate() {
+        
+        String existingId = scheduler.generateBookingId(); 
+        scheduler.addPatient(p1); 
+        String newId = scheduler.generateBookingId();
+        assertNotEquals(existingId, newId);
+    }
+
+    @Test
+    public void testRescheduleAppointmentNonExistingBookingId() {
+        LocalDate newDate = LocalDate.of(2024, 12, 14); 
+        boolean result = scheduler.rescheduleAppointment("non-existing-id", newDate);
+        
+        assertFalse(result); 
+    }
+
+    @Test
+    public void testRescheduleAppointmentThatIsValid() {
+        String bookingId = scheduler.addPatient(p1); 
+        assertTrue(scheduler.getScheduledPatients().contains(p1)); 
+    
+        LocalDate newDate = LocalDate.of(2024, 12, 14); 
+        boolean result = scheduler.rescheduleAppointment(bookingId, newDate); 
+        
+        assertTrue(result);
+        assertEquals(newDate, p1.getAppointementDate()); 
+        assertTrue(p1.getBookingId().equals(bookingId)); 
+    }
+    
+
+
+   
 }
