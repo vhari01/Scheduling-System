@@ -68,8 +68,8 @@ public class Patient implements Comparable<Patient> {
     }
 
     // Getters and setters for specialist required by patient
-    public void setspecialistRequired(Specialist neededSpecialist) {
-        this.specialistRequired = neededSpecialist;
+    public void setspecialistRequired(Specialist newSpecialist) {
+        this.specialistRequired = newSpecialist;
     }
 
     public Specialist getspecialistRequired() {
@@ -99,7 +99,7 @@ public class Patient implements Comparable<Patient> {
     @Override
     public int compareTo(Patient other) {
         if (this.appointmentDate.equals(other.appointmentDate)
-                && this.specialistRequired.equals(other.specialistRequired)) {
+                &&( this.getspecialistRequired() == other.getspecialistRequired()) ){
             if (this.levelOfEmergency > other.levelOfEmergency) {
                 return -1;
             } else if (this.levelOfEmergency < other.levelOfEmergency) {
