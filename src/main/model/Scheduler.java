@@ -58,9 +58,22 @@ public class Scheduler {
             }
         }    
         return false; 
+    }
+    //REQUIRES: !(new date < current date)
+    //MODIFIES: Appointment date
+    //EFFECTS: changes the current appointment date to a new appoitment date
+    public boolean rescheduleAppointment(String bookingId, LocalDate newAppointmentDate) {
+        if(newAppointmentDate.isBefore(LocalDate.now())){
+            return false;
+        }
 
-       
-
+        for(Patient patient: listOfPatients){
+            if(patient.getBookingId().equals(bookingId)){
+                patient.setAppointmentDate(newAppointmentDate);
+                return true;
+            }
+        }
+        return false;
     }
 
     // REQUIRES: a list consisting of patients
