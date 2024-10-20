@@ -24,7 +24,6 @@ public class Scheduler {
         String bookingId = generateBookingId();
         p1.setBookingId(bookingId);
         listOfPatients.add(p1);
-
         return bookingId;  
     }
     //EFFECTS : Generates a random unique booking id
@@ -51,7 +50,7 @@ public class Scheduler {
         Iterator<Patient> itr = listOfPatients.iterator();  
         while(itr.hasNext()){
             Patient p1 = itr.next();
-            if(p1.getBookingId()==bookingId){
+            if(p1.getBookingId().equals(bookingId)){
                 itr.remove();
                 bookingIds.remove(bookingId);
                 return true;
