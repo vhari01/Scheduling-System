@@ -71,6 +71,7 @@ public class HospitalScheduler {
         System.out.println("\nSelect from:");
         System.out.println("\ta -> Add a patient");
         System.out.println("\tc -> Cancel an appointment");
+        System.out.println("\tr -> Reschedule an appointment");
         System.out.println("\ts -> View patients sorted by emergency level");
         System.out.println("\tn -> Treat the next patient");
         System.out.println("\tq -> Quit");
@@ -86,14 +87,16 @@ public class HospitalScheduler {
             sortingOutPatients();
         } else if (command.equals("n")) {
             treatingPatient();
-        } else {
+        }else if (command.equals("r")) {
+            reschedulePatient();
+        }else {
             System.out.println("Invalid selection...");
         }
 
     }
 
     // MODIFIES: this
-    // EFFECTS: processes user command
+    // EFFECTS: creates and adds a new patient
     public void patientAddition() {
         sc.nextLine();
 
@@ -139,12 +142,11 @@ public class HospitalScheduler {
         
 
         System.out.println("Enter appointment date (YYYY-MM-DD):");
-
         String dateInput = sc.nextLine();
 
         if (dateInput.isEmpty()) {
-        System.out.println("Appointment date cannot be empty. Please enter a valid date.");
-        return;
+            System.out.println("Appointment date cannot be empty. Please enter a valid date.");
+            return;
         }
 
         LocalDate appointmentDate;
@@ -155,40 +157,56 @@ public class HospitalScheduler {
             return;
         }
 
+
         Patient newPatient = new Patient(name, age, insurance, emergencyLevel, specialist, appointmentDate);
-        schedule.addPatient(newPatient);
-        System.out.println("Patient added successfully!");
+        String bookingId = schedule.addPatient(newPatient);     
+        System.out.println("Patient added successfully!Booking ID: " + bookingId );
     }
 
     // MODIFIES: this
-    // EFFECTS: adds a new patient to the scheduler
+    // EFFECTS: cancels a patients appointment if it exists
     public void patientAppointmentCancel() {
-        sc.nextLine(); // consume newline
-        System.out.println("Enter patient's name:");
-        String name = sc.nextLine();
+       sc.nextLine();
+       System.out.println("Enter booking id");
+       String bookingId = sc.nextLine();
 
-        System.out.println("Enter patient's age:");
-        int age = sc.nextInt();
+       boolean cancelAp = schedule.cancelAppointment(bookingId);
 
-        sc.nextLine(); // consume newline
-        System.out.println("Enter specialist booked:");
-        String specialist = sc.nextLine();
+       if(cancelAp){
+        System.out.println("Appointment canceled successfully!!!");
+       }else{
+        System.out.println("No matching appointments found");
+       }
+    }
 
-        System.out.println("Enter appointment date fixed (YYYY-MM-DD):");
+    public void reschedulePatient(){
+        sc.nextLine(); 
+        System.out.println("Enter booking ID:");
+        String bookingId = sc.nextLine();
+
+        System.out.println("Enter the new appointment date (YYYY-MM-DD):");
         String dateInput = sc.nextLine();
-        LocalDate appointmentDate = LocalDate.parse(dateInput);
+        LocalDate newAppointmentDate;
 
-        boolean cancel = schedule.cancelAppointment(name, age, appointmentDate, specialist);
-        if (cancel) {
-            System.out.println("Appointment canceled successfully!!!.");
-        } else {
-            System.out.println("No matching appointment found.");
+        try {
+            newAppointmentDate = LocalDate.parse(dateInput);
+        } catch (Exception e) {
+            System.out.println("Invalid date format. Please enter the date in YYYY-MM-DD format.");
+            return;
         }
 
+        boolean rescheduled =  schedule.rescheduleAppointment(bookingId, newAppointmentDate);
+        if(rescheduled){
+            System.out.println("Appointment rescheduled to "+ dateInput);
+        }else{
+            System.out.println("Invalid Id, Please check your Id");
+        }
+
+
     }
 
     // MODIFIES: this
-    // EFFECTS: cancels a patient appointment if it exists
+    // EFFECTS: compare patients and sorts them out
     public void sortingOutPatients() {
         System.out.println("\nPatients sorted by priority:");
         for (Patient patient : schedule.sortPatientsByPriority()) {
@@ -197,7 +215,7 @@ public class HospitalScheduler {
 
     }
 
-    // EFFECTS: displays patients sorted by emergency level
+    // EFFECTS: treats patients and removes them from the list
     public void treatingPatient() {
         if (schedule.getScheduledPatients().isEmpty()) {
             System.out.println("No patients to treat.");
@@ -207,4 +225,5 @@ public class HospitalScheduler {
         }
 
     }
+
 }
