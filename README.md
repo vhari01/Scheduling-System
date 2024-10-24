@@ -9,6 +9,15 @@ List of things I expect the program to do:
 - As a user, I want tot be able to cancel an appointment.
 - As a user, the application should remove the treated patients from the priority list.
 - As a user, the application should show me the number of people in queue before.
+- As a user, I want the application to assign me a booking id as a scheduling confirmation.
+- As a user, I want to be able to cancel the appointment by just using the booking Id.
+- As a user, I want to be able to reschedule the appointment to a new future date by just using the booking Id.
+- As a user, I want to be able to select a specialist from the hospital provided list of specialists.
+- As a user, I want to be able to save patient information while scheduling appointments.
+- As a user, I want to be able to load patient information so that I can reschedule or cancel appointment.
+
+
+
 
 
  
