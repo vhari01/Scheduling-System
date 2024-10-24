@@ -59,20 +59,22 @@ public class JsonReader {
     }
     // MODIFIES: scheduler
     // EFFECTS: parses patient from JSON object and adds them to scheduler
-    public void addPatient(Scheduler scheduler, JSONObject jsonObject){
-         String name = jsonObject.getString("name");
+    public void addPatient(Scheduler scheduler, JSONObject jsonObject) {
+        String name = jsonObject.getString("name");
         int age = jsonObject.getInt("age");  
         int emergencyLevel = jsonObject.getInt("emergencyLevel");
         boolean hasInsurance = jsonObject.getBoolean("hasInsurance");
-        
-        String specialistType = jsonObject.getString("specialist");
+    
+        JSONObject specialistObject = jsonObject.getJSONObject("specialist");
+        String specialistType = specialistObject.getString("specialistName"); 
         Specialist specialist = new Specialist(specialistType);  
-        
+    
         String appointmentDateStr = jsonObject.getString("appointmentDate");
         LocalDate appointmentDate = LocalDate.parse(appointmentDateStr);  
-
+    
         Patient patient = new Patient(name, age, hasInsurance, emergencyLevel, specialist, appointmentDate);
         scheduler.addPatient(patient);
     }
+    
 
 }
