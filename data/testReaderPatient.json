@@ -1,0 +1,24 @@
+{
+    "patients": [
+        {
+            "name": "Alice ",
+            "age": 45,
+            "emergencyLevel": 4,
+            "hasInsurance": true,
+            "specialist": {
+                "name": "Cardiologist"  
+            },
+            "appointmentDate": "2024-12-13"
+        },
+        {
+            "name": "Max",
+            "age": 24,
+            "emergencyLevel": 2,
+            "hasInsurance": false,
+            "specialist": {
+                "name": "Dermatologist"  
+            },
+            "appointmentDate": "2024-12-13"
+        }
+    ]
+}
