@@ -14,8 +14,8 @@ List of things I expect the program to do:
 - As a user, I want to be able to reschedule the appointment to a new future date by just using the booking Id.
 - As a user, I want to be able to select a specialist from the hospital provided list of specialists.
 - As a user, I want to be able to save patient information while scheduling appointments.
-- As a user, I want to be able to load patient information so that I can reschedule or cancel appointment.
-
+- As a user, I want to be able to load patient information so that I can reschedule appointment.
+- As a user, i should be able to cancel an appointment saved.
 
 
 
