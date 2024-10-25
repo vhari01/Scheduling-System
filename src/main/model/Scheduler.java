@@ -24,14 +24,15 @@ public class Scheduler {
         String bookingId = generateBookingId();
         p1.setBookingId(bookingId);
         listOfPatients.add(p1);
-        return bookingId;  
+        return bookingId;
     }
-    //EFFECTS : Generates a random unique booking id
-    public String generateBookingId(){
+
+    // EFFECTS : Generates a random unique booking id
+    public String generateBookingId() {
         String bookingId;
 
         do {
-            bookingId = String.valueOf((int) (Math.random() * 900000) );  // Generate random 6-digit number
+            bookingId = String.valueOf((int) (Math.random() * 900000)); // Generate random 6-digit number
         } while (bookingIds.contains(bookingId)); // Ensure the booking ID is unique
         bookingIds.add(bookingId); // Add the new booking ID to the list
         return bookingId;
@@ -47,27 +48,28 @@ public class Scheduler {
     // otherwise returns false.
 
     public boolean cancelAppointment(String bookingId) {
-        Iterator<Patient> itr = listOfPatients.iterator();  
-        while(itr.hasNext()){
+        Iterator<Patient> itr = listOfPatients.iterator();
+        while (itr.hasNext()) {
             Patient p1 = itr.next();
-            if(p1.getBookingId().equals(bookingId)){
+            if (p1.getBookingId().equals(bookingId)) {
                 itr.remove();
                 bookingIds.remove(bookingId);
                 return true;
             }
-        }    
-        return false; 
+        }
+        return false;
     }
-    //REQUIRES: !(new date < current date)
-    //MODIFIES: Appointment date
-    //EFFECTS: changes the current appointment date to a new appoitment date
+
+    // REQUIRES: !(new date < current date)
+    // MODIFIES: Appointment date
+    // EFFECTS: changes the current appointment date to a new appoitment date
     public boolean rescheduleAppointment(String bookingId, LocalDate newAppointmentDate) {
-        if(newAppointmentDate.isBefore(LocalDate.now())){
+        if (newAppointmentDate.isBefore(LocalDate.now())) {
             return false;
         }
 
-        for(Patient patient: listOfPatients){
-            if(patient.getBookingId().equals(bookingId)){
+        for (Patient patient : listOfPatients) {
+            if (patient.getBookingId().equals(bookingId)) {
                 patient.setAppointmentDate(newAppointmentDate);
                 return true;
             }
