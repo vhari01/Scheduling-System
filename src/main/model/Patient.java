@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONObject;
+
 import java.time.LocalDate;
 /*A patient class that takes patients data.
  The class has some fields required for patient data, 
@@ -120,6 +122,18 @@ public class Patient implements Comparable<Patient> {
         } else {
             return 0;
         }
+    }
+
+    // EFFECTS: converts patient to JSON object
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", this.patientName);
+        json.put("age", this.patientAge); 
+        json.put("emergencyLevel", this.levelOfEmergency); 
+        json.put("hasInsurance", this.insuranceStatus); 
+        json.put("appointmentDate", this.appointmentDate.toString());
+        json.put("specialist", this.specialistRequired.toJson());
+        return json;
     }
 
 }
