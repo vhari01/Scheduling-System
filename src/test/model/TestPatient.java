@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.time.LocalDate;
 
-
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
 public class TestPatient extends TestClass {
@@ -80,4 +80,21 @@ public class TestPatient extends TestClass {
         
         assertEquals(0, p1.compareTo(p2)); 
     }
+    
+    @Test
+    public void testToJson() {
+    Specialist specialist = new Specialist("Cardiologist");
+    Patient patient = new Patient("Alice", 30, true, 4, specialist, LocalDate.of(2024, 12, 13));
+    
+    JSONObject json = patient.toJson();
+    
+    assertEquals("Alice", json.getString("name"));
+    assertEquals(30, json.getInt("age"));
+    assertTrue(json.getBoolean("hasInsurance"));
+    assertEquals(4, json.getInt("emergencyLevel"));
+    assertEquals("2024-12-13", json.getString("appointmentDate"));
+    
+    JSONObject specialistJson = json.getJSONObject("specialist");
+    assertEquals("Cardiologist", specialistJson.getString("specialistName"));
+}
 }
