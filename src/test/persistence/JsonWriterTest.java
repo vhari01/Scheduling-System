@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 
@@ -15,12 +16,18 @@ import static org.junit.jupiter.api.Assertions.*;
 public class JsonWriterTest {
     
     @Test
-    void testWriterInvalidFile() throws IOException {
-        Scheduler scheduler = new Scheduler();
-        JsonWriter writer = new JsonWriter("./data/my\0illegal:fileName.json");
-        writer.open();  // This should throw an IOException
-        fail("IOException was expected");
-    }
+    void testWriterInvalidFile() {
+        
+        try {
+            Scheduler scheduler = new Scheduler();
+            JsonWriter writer = new JsonWriter("./data/my\0illegal:fileName.json");
+            writer.open();
+            fail("IOException was expected");
+        } catch (FileNotFoundException e) {
+            
+        }
+        }
+        
 
     @Test
     void testWriterEmptyScheduler() {
