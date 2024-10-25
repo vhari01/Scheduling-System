@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public class HospitalScheduler {
 
     private Scheduler schedule;
-    private List <Specialist> specialistAvailable;
+    private List<Specialist> specialistAvailable;
     private Scanner sc;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
@@ -30,7 +30,7 @@ public class HospitalScheduler {
         runHospital();
     }
 
-    public List <Specialist> createSpecialists(){
+    public List<Specialist> createSpecialists() {
         List<Specialist> specialists = new ArrayList<>();
         specialists.add(new Specialist("Cardiologist"));
         specialists.add(new Specialist("Dermatologist"));
@@ -98,9 +98,9 @@ public class HospitalScheduler {
             sortingOutPatients();
         } else if (command.equals("n")) {
             treatingPatient();
-        }else if (command.equals("r")) {
+        } else if (command.equals("r")) {
             reschedulePatient();
-        }else {
+        } else {
             System.out.println("Invalid selection...");
         }
 
@@ -108,6 +108,7 @@ public class HospitalScheduler {
 
     // MODIFIES: this
     // EFFECTS: creates and adds a new patient
+    @SuppressWarnings("methodlength")
     public void patientAddition() {
         sc.nextLine();
 
@@ -135,7 +136,8 @@ public class HospitalScheduler {
 
         System.out.println("Select a specialist by entering the corresponding letter:");
         char specialistLetter = 'a';
-        for(int i = 0; i<specialistAvailable.size(); i++){
+
+        for (int i = 0; i < specialistAvailable.size(); i++) {
             System.out.println(specialistLetter + "->" + specialistAvailable.get(i).getSpecialistName());
             specialistLetter++;
         }
@@ -150,7 +152,6 @@ public class HospitalScheduler {
         Specialist specialist = specialistAvailable.get(specialistIndex);
 
         sc.nextLine();
-        
 
         System.out.println("Enter appointment date (YYYY-MM-DD):");
         String dateInput = sc.nextLine();
@@ -168,30 +169,30 @@ public class HospitalScheduler {
             return;
         }
 
-
         Patient newPatient = new Patient(name, age, insurance, emergencyLevel, specialist, appointmentDate);
-        String bookingId = schedule.addPatient(newPatient);     
-        System.out.println("Patient added successfully!Booking ID: " + bookingId );
+        String bookingId = schedule.addPatient(newPatient);
+        System.out.println("Patient added successfully!Booking ID: " + bookingId);
     }
+    
 
     // MODIFIES: this
     // EFFECTS: cancels a patients appointment if it exists
     public void patientAppointmentCancel() {
-       sc.nextLine();
-       System.out.println("Enter booking id");
-       String bookingId = sc.nextLine();
+        sc.nextLine();
+        System.out.println("Enter booking id");
+        String bookingId = sc.nextLine();
 
-       boolean cancelAp = schedule.cancelAppointment(bookingId);
+        boolean cancelAp = schedule.cancelAppointment(bookingId);
 
-       if(cancelAp){
-        System.out.println("Appointment canceled successfully!!!");
-       }else{
-        System.out.println("No matching appointments found");
-       }
+        if (cancelAp) {
+            System.out.println("Appointment canceled successfully!!!");
+        } else {
+            System.out.println("No matching appointments found");
+        }
     }
 
-    public void reschedulePatient(){
-        sc.nextLine(); 
+    public void reschedulePatient() {
+        sc.nextLine();
         System.out.println("Enter booking ID:");
         String bookingId = sc.nextLine();
 
@@ -206,13 +207,12 @@ public class HospitalScheduler {
             return;
         }
 
-        boolean rescheduled =  schedule.rescheduleAppointment(bookingId, newAppointmentDate);
-        if(rescheduled){
-            System.out.println("Appointment rescheduled to "+ dateInput);
-        }else{
+        boolean rescheduled = schedule.rescheduleAppointment(bookingId, newAppointmentDate);
+        if (rescheduled) {
+            System.out.println("Appointment rescheduled to " + dateInput);
+        } else {
             System.out.println("Invalid Id, Please check your Id");
         }
-
 
     }
 
@@ -247,7 +247,7 @@ public class HospitalScheduler {
         }
     }
 
-     // EFFECTS: saves patient data to JSON
+    // EFFECTS: saves patient data to JSON
     private void savePatients() {
         try {
             jsonWriter.open();
