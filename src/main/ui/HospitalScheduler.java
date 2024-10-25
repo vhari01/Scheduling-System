@@ -5,6 +5,10 @@ import model.Scheduler;
 import model.Specialist;
 
 import java.util.*;
+
+import Persistence.JsonReader;
+import Persistence.JsonWriter;
+
 import java.time.LocalDate;
 
 public class HospitalScheduler {
@@ -12,11 +16,17 @@ public class HospitalScheduler {
     private Scheduler schedule;
     private List <Specialist> specialistAvailable;
     private Scanner sc;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
+    private static final String JSON_STORE = "./data/patients.json";
 
     public HospitalScheduler() {
         schedule = new Scheduler();
         specialistAvailable = createSpecialists();
         sc = new Scanner(System.in);
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
+        loadPatients();
         runHospital();
     }
 
@@ -55,6 +65,7 @@ public class HospitalScheduler {
             command = command.toLowerCase();
 
             if (command.equals("q")) {
+                savePatients(); // Save patients before quitting
                 run = false;
             } else {
                 checkCommand(command);
@@ -224,6 +235,28 @@ public class HospitalScheduler {
             System.out.println("Next patient treated.");
         }
 
+    }
+
+    // EFFECTS: loads patient data from JSON
+    private void loadPatients() {
+        try {
+            schedule = jsonReader.read(); // Load patients into the schedule
+            System.out.println("Loaded patients from " + JSON_STORE);
+        } catch (Exception e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
+    }
+
+     // EFFECTS: saves patient data to JSON
+    private void savePatients() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(schedule);
+            jsonWriter.close();
+            System.out.println("Saved patients to " + JSON_STORE);
+        } catch (Exception e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
     }
 
 }
