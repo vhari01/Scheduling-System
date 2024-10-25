@@ -1,4 +1,6 @@
 package model;
+import org.json.JSONObject;
+
 
 public class Specialist {
     private String specialistName;
@@ -16,6 +18,12 @@ public class Specialist {
 
     public String getSpecialistName(){
         return  this.specialistName;
+    }
+
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("specialistName", getSpecialistName());
+        return json;
     }
 
 }
