@@ -2,6 +2,8 @@ package model;
 
 import org.json.JSONObject;
 
+
+
 import java.time.LocalDate;
 /*A patient class that takes patients data.
  The class has some fields required for patient data, 
@@ -135,5 +137,6 @@ public class Patient implements Comparable<Patient> {
         json.put("specialist", this.specialistRequired.toJson());
         return json;
     }
+
 
 }

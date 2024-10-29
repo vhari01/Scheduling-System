@@ -2,7 +2,6 @@ package Persistence;
 
 import model.Patient;
 import model.Scheduler;
-import model.Specialist;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

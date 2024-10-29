@@ -3,8 +3,7 @@ package Persistence;
 import model.Patient;
 import model.Scheduler;
 import model.Specialist;
-import org.json.JSONArray;
-import org.json.JSONObject;
+
 import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;

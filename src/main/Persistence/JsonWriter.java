@@ -2,7 +2,6 @@ package Persistence;
 
 import model.Patient;
 import model.Scheduler;
-import model.Specialist;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
