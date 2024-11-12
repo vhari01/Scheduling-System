@@ -20,7 +20,8 @@ public class JsonWriter {
     }
 
     // MODIFIES: this
-    // EFFECTS: opens writer; throws FileNotFoundException if destination file cannot
+    // EFFECTS: opens writer; throws FileNotFoundException if destination file
+    // cannot
     // be opened for writing
     public void open() throws FileNotFoundException {
         writer = new PrintWriter(new File(destination));
@@ -29,7 +30,7 @@ public class JsonWriter {
     // REQUIRES: scheduler is not null
     // MODIFIES: this
     // EFFECTS: writes JSON representation of scheduler to file
-    public void write(Scheduler scheduler)  {
+    public void write(Scheduler scheduler) {
         JSONObject json = schedulerToJson(scheduler);
         saveToFile(json.toString(TAB));
     }
@@ -61,6 +62,7 @@ public class JsonWriter {
         }
         return jsonArray;
     }
+
     // REQUIRES: patient is not null
     // EFFECTS: converts a patient object to JSON object
     private JSONObject patientToJson(Patient patient) {
