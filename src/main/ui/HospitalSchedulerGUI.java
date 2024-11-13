@@ -1,6 +1,7 @@
 package ui;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 
 import model.Patient;
 import model.Scheduler;
@@ -23,23 +24,85 @@ public class HospitalSchedulerGUI extends JFrame {
 
     // Initializes the UI components and main panel layout
     private void initializeUI() {
-        // Main panel to hold everything
-        JPanel mainPanel = new JPanel(new BorderLayout());
 
+        Color creamColor = new Color(255, 253, 208);
+        LineBorder highlightedBorder = new LineBorder(Color.BLUE, 3); // Blue border with thickness 3
+
+        // Main panel to hold everything
+        JPanel mainPanel = new JPanel(new BorderLayout(10, 10)); // Add outer border spacing
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Inner spacing
+        mainPanel.setBackground(creamColor);
+    
         // Welcome label
         JLabel welcomeLabel = new JLabel("Welcome to the Hospital Scheduler", JLabel.CENTER);
-        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 30));
         mainPanel.add(welcomeLabel, BorderLayout.NORTH);
+        
+    
+        // Panel to hold the menu options with vertical spacing
+        JPanel menuPanel = new JPanel();
+        menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS)); // Stack buttons vertically
+        menuPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0)); // Space between welcome and buttons
+        
 
-        // Menu options panel
-        JPanel menuPanel = new JPanel(new GridLayout(6, 1, 10, 10));
+    
+        // Define button dimensions
+        Dimension buttonSize = new Dimension(400, 150);
+        Dimension buttonSize2 = new Dimension(820, 150);
+    
+        // Row 1: Patient and View Patients Sorted
+        JPanel row1 = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         JButton patientButton = new JButton("Patient");
+        patientButton.setFont(new Font("Serif", Font.BOLD, 20));
+
         JButton viewSortedButton = new JButton("View Patients Sorted by Emergency Level");
+        viewSortedButton.setFont(new Font("Serif", Font.BOLD, 19));
+
+        patientButton.setPreferredSize(buttonSize);
+        viewSortedButton.setPreferredSize(buttonSize);
+        patientButton.setBorder(highlightedBorder); // Add border to highlight
+        viewSortedButton.setBorder(highlightedBorder);
+        row1.add(patientButton);
+        row1.add(viewSortedButton);
+        menuPanel.add(row1);
+    
+        // Row 2: Treat Next Patient (centered)
+        JPanel row2 = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         JButton treatNextButton = new JButton("Treat Next Patient");
+        treatNextButton.setFont(new Font("Serif", Font.BOLD, 20));
+
+        treatNextButton.setPreferredSize(buttonSize2);
+        treatNextButton.setBorder(highlightedBorder); // Add border to highlight
+
+        row2.add(treatNextButton);
+        menuPanel.add(row2);
+    
+        // Row 3: Save and Load (side by side)
+        JPanel row3 = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         JButton saveButton = new JButton("Save");
         JButton loadButton = new JButton("Load");
-        JButton exitButton = new JButton("Exit");
+        saveButton.setFont(new Font("Serif", Font.BOLD, 20));
+        loadButton.setFont(new Font("Serif", Font.BOLD, 20));
 
+        saveButton.setPreferredSize(buttonSize);
+        loadButton.setPreferredSize(buttonSize);
+        saveButton.setBorder(highlightedBorder); // Add border to highlight
+        loadButton.setBorder(highlightedBorder);
+        row3.add(saveButton);
+        row3.add(loadButton);
+        menuPanel.add(row3);
+    
+        // Row 4: Exit button (centered)
+        JPanel row4 = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        JButton exitButton = new JButton("Exit");
+        exitButton.setFont(new Font("Serif", Font.BOLD, 20));
+
+        exitButton.setPreferredSize(buttonSize2);
+        exitButton.setBorder(highlightedBorder); // Add border to highlight
+
+        row4.add(exitButton);
+        menuPanel.add(row4);
+    
         // Add action listeners for each button
         patientButton.addActionListener(e -> showPatientMenu());
         viewSortedButton.addActionListener(e -> viewPatientsSorted());
@@ -48,21 +111,22 @@ public class HospitalSchedulerGUI extends JFrame {
         loadButton.addActionListener(e -> loadPatients());
         exitButton.addActionListener(e -> System.exit(0));
 
-        // Add buttons to the menu panel
-        menuPanel.add(patientButton);
-        menuPanel.add(viewSortedButton);
-        menuPanel.add(treatNextButton);
-        menuPanel.add(saveButton);
-        menuPanel.add(loadButton);
-        menuPanel.add(exitButton);
-
+        menuPanel.setBackground(creamColor);
+        row1.setBackground(creamColor);
+        row2.setBackground(creamColor);
+        row3.setBackground(creamColor);
+        row4.setBackground(creamColor);
+    
+        // Add the menuPanel to the main panel and set it as the frame's content pane
         mainPanel.add(menuPanel, BorderLayout.CENTER);
         add(mainPanel);
     }
+    
+    
 
     // Shows the Patient submenu with options to add, cancel, or reschedule an appointment
     private void showPatientMenu() {
-        JPanel patientMenuPanel = new JPanel(new GridLayout(4, 1, 10, 10));
+        JPanel patientMenuPanel = new JPanel(new GridLayout(2, 2, 10, 10));
         JButton addPatientButton = new JButton("Add Patient");
         JButton cancelAppointmentButton = new JButton("Cancel Appointment");
         JButton rescheduleAppointmentButton = new JButton("Reschedule Appointment");
