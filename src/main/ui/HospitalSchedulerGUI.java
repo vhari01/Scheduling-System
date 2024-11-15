@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +28,7 @@ public class HospitalSchedulerGUI extends JFrame {
         setSize(1000, 800);
         setLocationRelativeTo(null);
         this.specialists = Arrays.asList(
+        new Specialist("Select"),
         new Specialist("Cardiologist"),
         new Specialist("Neurologist"),
         new Specialist("Orthopedic"),
@@ -62,7 +64,7 @@ public class HospitalSchedulerGUI extends JFrame {
     
         // Welcome label
         JLabel welcomeLabel = new JLabel("Welcome to the Hospital Scheduler", JLabel.CENTER);
-        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 30));
+        welcomeLabel.setFont(new Font("Serif", Font.BOLD, 30));
         mainPanel.add(welcomeLabel, BorderLayout.NORTH);
         
     
@@ -300,15 +302,15 @@ public class HospitalSchedulerGUI extends JFrame {
         gbc.anchor = GridBagConstraints.WEST;
     
         // Create input fields
-        JTextField nameField = new JTextField(20);
-        JTextField ageField = new JTextField(20);
-        JTextField emergencyLevelField = new JTextField(20);
+        JTextField nameField = new JTextField(15);
+        JTextField ageField = new JTextField(15);
+        JTextField emergencyLevelField = new JTextField(15);
         JComboBox<Specialist> specialistComboBox = new JComboBox<>(specialists.toArray(new Specialist[0]));
         JCheckBox hasInsuranceCheckbox = new JCheckBox("Has Insurance");
     
         // Date picker for appointment (consider a JDatePicker for better UI, or JTextField for simplicity)
         LocalDate today = LocalDate.now();
-        JTextField dateField = new JTextField(today.toString(), 20);
+        JTextField dateField = new JTextField(today.toString(), 15);
     
         // Add labels and fields to the panel with custom GridBag constraints
         gbc.gridx = 0;
@@ -370,14 +372,23 @@ public class HospitalSchedulerGUI extends JFrame {
         JScrollPane scrollPane = new JScrollPane(panel);
         scrollPane.setPreferredSize(new Dimension(400, 350)); // ScrollPane size
     
-        // Show input dialog with the form
-        int result = JOptionPane.showConfirmDialog(this, scrollPane, "Add Patient", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-        if (result == JOptionPane.OK_OPTION) {
-            processForm(panel, nameField, ageField, emergencyLevelField, specialistComboBox, dateField, hasInsuranceCheckbox, today);
+        // Loop until valid input is entered
+        boolean validInput = false;
+        while (!validInput) {
+            // Show input dialog with the form
+            int result = JOptionPane.showConfirmDialog(this, scrollPane, "Add Patient", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+    
+            // If Cancel is clicked, break out of the loop
+            if (result != JOptionPane.OK_OPTION) {
+                return;
+            }
+    
+            // If OK is clicked, process the form input
+            validInput = processForm(panel, nameField, ageField, emergencyLevelField, specialistComboBox, dateField, hasInsuranceCheckbox, today);
         }
     }
     
-    private void processForm(JPanel panel, JTextField nameField, JTextField ageField, JTextField emergencyLevelField, JComboBox<Specialist> specialistComboBox, JTextField dateField, JCheckBox hasInsuranceCheckbox, LocalDate today) {
+    private boolean processForm(JPanel panel, JTextField nameField, JTextField ageField, JTextField emergencyLevelField, JComboBox<Specialist> specialistComboBox, JTextField dateField, JCheckBox hasInsuranceCheckbox, LocalDate today) {
         try {
             // Gather input values
             String patientName = nameField.getText();
@@ -390,7 +401,7 @@ public class HospitalSchedulerGUI extends JFrame {
             // Validation for empty fields and default selections
             if (patientName.isEmpty() || ageText.isEmpty() || emergencyLevelText.isEmpty() || appointmentDateText.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "All fields are required. Please fill in all fields.", "Input Error", JOptionPane.ERROR_MESSAGE);
-                return;
+                return false; // Keep the form open
             }
     
             // Parse the inputs
@@ -411,28 +422,241 @@ public class HospitalSchedulerGUI extends JFrame {
     
             // Create new Patient object
             Patient newPatient = new Patient(patientName, patientAge, hasInsurance, emergencyLevel, selectedSpecialist, appointmentDate);
-            schedule.addPatient(newPatient); // Add patient to schedule
     
-            JOptionPane.showMessageDialog(this, "Patient added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            // Add patient to schedule
+            schedule.addPatient(newPatient);
+    
+            // Display success message with the Booking ID
+            JOptionPane.showMessageDialog(this, "Patient added successfully!\nBooking ID: " + newPatient.getBookingId(),
+                                          "Success", JOptionPane.INFORMATION_MESSAGE);
+    
+            return true; // Close the form after valid input
+    
         } catch (IllegalArgumentException e) {
             // Show specific error message
             JOptionPane.showMessageDialog(this, e.getMessage(), "Input Error", JOptionPane.ERROR_MESSAGE);
+            return false; // Keep the form open
         }
     }
     
+
+    private void cancelAppointment() {
+        JPanel cancelPanel = new JPanel(new GridBagLayout());
+        cancelPanel.setBackground(new Color(255, 253, 208));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(15, 15, 15, 15);
+    
+        // Set up the Booking ID input field
+        JTextField bookingIdField = new JTextField(15);
+        bookingIdField.setFont(new Font("Serif", Font.PLAIN, 14));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        cancelPanel.add(new JLabel("Enter Booking ID: "), gbc);
+    
+        gbc.gridy = 1;
+        cancelPanel.add(bookingIdField, gbc);
+    
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(new Color(255, 253, 208));
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 10));
+    
+        // Cancel Appointment Button
+        JButton cancelAppointmentButton = new JButton("Cancel Appointment");
+        cancelAppointmentButton.setFont(new Font("Serif", Font.BOLD, 14));
+        cancelAppointmentButton.setBackground(new Color(34, 139, 34)); // Green color for success
+        cancelAppointmentButton.setForeground(Color.WHITE);
+        cancelAppointmentButton.setPreferredSize(new Dimension(180, 40));
+    
+        cancelAppointmentButton.addActionListener(e -> {
+            String bookingIdText = bookingIdField.getText().trim();
+            if (bookingIdText.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Booking ID is required!", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+    
+            // Search for the patient in the list of scheduled patients
+            Patient patientToCancel = null;
+            for (Patient patient : schedule.getScheduledPatients()) {
+                if (patient.getBookingId().equals(bookingIdText)) {
+                    patientToCancel = patient;
+                    break;
+                }
+            }
+    
+            // If patient is found, display confirmation message
+            if (patientToCancel != null) {
+                int confirmation = JOptionPane.showConfirmDialog(
+                    this,
+                    String.format("Cancel appointment for:\n\nPatient Name: %s\nAppointment Date: %s",
+                            patientToCancel.getPatientName(),
+                            patientToCancel.getAppointementDate()),
+                    "Confirm Cancellation",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE
+                );
+    
+                // Proceed with cancellation if confirmed
+                if (confirmation == JOptionPane.YES_OPTION) {
+                    boolean canceled = schedule.cancelAppointment(bookingIdText);
+                    if (canceled) {
+                        JOptionPane.showMessageDialog(this, "Appointment canceled successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Failed to cancel the appointment.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Invalid Booking ID.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+    
+        // Close Button
+        JButton closeButton = new JButton("Close");
+        closeButton.setFont(new Font("Serif", Font.BOLD, 14));
+        closeButton.setBackground(new Color(255, 69, 0)); // Red color for close
+        closeButton.setForeground(Color.WHITE);
+        closeButton.setPreferredSize(new Dimension(150, 40));
+    
+        closeButton.addActionListener(e -> {
+            ((JComponent) e.getSource()).getTopLevelAncestor().setVisible(false);
+        });
+    
+        // Add buttons to the button panel
+        buttonPanel.add(cancelAppointmentButton);
+        buttonPanel.add(closeButton);
+    
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        cancelPanel.add(buttonPanel, gbc);
+    
+        JScrollPane scrollPane = new JScrollPane(cancelPanel);
+        scrollPane.setPreferredSize(new Dimension(400, 350));
+    
+        JOptionPane.showMessageDialog(this, scrollPane, "Cancel Appointment", JOptionPane.PLAIN_MESSAGE);
+    }
+    
     
 
-    // Method to cancel an appointment
-    private void cancelAppointment() {
-        // Implement cancel appointment dialog
-        JOptionPane.showMessageDialog(this, "Cancel Appointment functionality goes here.", "Cancel Appointment", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    // Method to reschedule an appointment
     private void rescheduleAppointment() {
-        // Implement reschedule appointment dialog
-        JOptionPane.showMessageDialog(this, "Reschedule Appointment functionality goes here.", "Reschedule Appointment", JOptionPane.INFORMATION_MESSAGE);
+        JPanel reschedulePanel = new JPanel(new GridBagLayout());
+        reschedulePanel.setBackground(new Color(255, 253, 208));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(15, 15, 15, 15);
+    
+        // Set up the Booking ID input field
+        JTextField bookingIdField = new JTextField(15);
+        bookingIdField.setFont(new Font("Serif", Font.PLAIN, 14));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        reschedulePanel.add(new JLabel("Enter Booking ID: "), gbc);
+    
+        gbc.gridy = 1;
+        reschedulePanel.add(bookingIdField, gbc);
+    
+        // Set up the new Appointment Date input field
+        JTextField newDateField = new JTextField(15);
+        newDateField.setFont(new Font("Serif", Font.PLAIN, 14));
+        gbc.gridy = 2;
+        reschedulePanel.add(new JLabel("Enter New Appointment Date (yyyy-mm-dd): "), gbc);
+    
+        gbc.gridy = 3;
+        reschedulePanel.add(newDateField, gbc);
+    
+        // Create a separate panel for the buttons
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(new Color(255, 253, 208));
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 10));
+    
+        JButton okButton = new JButton("Reschedule");
+        okButton.setFont(new Font("Serif", Font.BOLD, 14));
+        okButton.setBackground(new Color(34, 139, 34));
+        okButton.setForeground(Color.WHITE);
+        okButton.setPreferredSize(new Dimension(160, 40));
+    
+        okButton.addActionListener(e -> {
+            String bookingIdText = bookingIdField.getText().trim();
+            String newDateText = newDateField.getText().trim();
+    
+            if (bookingIdText.isEmpty() || newDateText.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Both fields are required!", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+    
+            // Validate the new date format
+            LocalDate newAppointmentDate;
+            try {
+                newAppointmentDate = LocalDate.parse(newDateText);
+            } catch (DateTimeParseException ex) {
+                JOptionPane.showMessageDialog(this, "Invalid date format! Use yyyy-mm-dd.", "Date Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+    
+            if (newAppointmentDate.isBefore(LocalDate.now())) {
+                JOptionPane.showMessageDialog(this, "New appointment date must be in the future.", "Date Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+    
+            // Check if the booking ID is valid and if the rescheduling is confirmed
+            Patient patientToReschedule = null;
+            for (Patient patient : schedule.getScheduledPatients()) {
+                if (patient.getBookingId().equals(bookingIdText)) {
+                    patientToReschedule = patient;
+                    break;
+                }
+            }
+    
+            if (patientToReschedule != null) {
+                int confirmation = JOptionPane.showConfirmDialog(
+                    this,
+                    String.format("Reschedule appointment for:\n\nPatient Name: %s\nCurrent Appointment Date: %s\nNew Appointment Date: %s",
+                            patientToReschedule.getPatientName(),
+                            patientToReschedule.getAppointementDate(),
+                            newAppointmentDate),
+                    "Confirm Rescheduling",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE
+                );
+    
+                if (confirmation == JOptionPane.YES_OPTION) {
+                    boolean success = schedule.rescheduleAppointment(bookingIdText, newAppointmentDate);
+                    if (success) {
+                        JOptionPane.showMessageDialog(this, "Appointment rescheduled successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Failed to reschedule the appointment.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Invalid Booking ID.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+    
+        JButton cancelButton = new JButton("Close");
+        cancelButton.setFont(new Font("Serif", Font.BOLD, 14));
+        cancelButton.setBackground(new Color(255, 69, 0));
+        cancelButton.setForeground(Color.WHITE);
+        cancelButton.setPreferredSize(new Dimension(160, 40));
+    
+        cancelButton.addActionListener(e -> {
+            ((JComponent) e.getSource()).getTopLevelAncestor().setVisible(false);
+        });
+    
+        buttonPanel.add(okButton);
+        buttonPanel.add(cancelButton);
+    
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 2;
+        reschedulePanel.add(buttonPanel, gbc);
+    
+        JScrollPane scrollPane = new JScrollPane(reschedulePanel);
+        scrollPane.setPreferredSize(new Dimension(400, 350));
+    
+        JOptionPane.showMessageDialog(this, scrollPane, "Reschedule Appointment", JOptionPane.PLAIN_MESSAGE);
     }
+    
+
 
     public static void main(String[] args) {
         Scheduler scheduler = new Scheduler(); // Assuming Scheduler class is correctly set up
