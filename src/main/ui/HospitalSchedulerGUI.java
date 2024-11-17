@@ -134,8 +134,8 @@ public class HospitalSchedulerGUI extends JFrame {
     
         // Add action listeners for each button
         patientButton.addActionListener(e -> showPatientMenu());
-        viewSortedButton.addActionListener(e -> viewPatientsSorted());
-        treatNextButton.addActionListener(e -> treatNextPatient());
+        viewSortedButton.addActionListener(e -> viewPatientsSortedPanel());
+        treatNextButton.addActionListener(e -> treatPatientsPanel());
         saveButton.addActionListener(e -> savePatients());
         loadButton.addActionListener(e -> loadPatients());
         exitButton.addActionListener(e -> System.exit(0));
@@ -251,24 +251,170 @@ public class HospitalSchedulerGUI extends JFrame {
     }
 
     // Method to view patients sorted by emergency level
-    private void viewPatientsSorted() {
-        JTextArea sortedPatientsTextArea = new JTextArea();
-        sortedPatientsTextArea.setText("Patients sorted by emergency level:\n");
-        for (Patient patient : schedule.sortPatientsByPriority()) {
-            sortedPatientsTextArea.append(patient.getPatientName() + " - Emergency Level: " + patient.getLevelOfEmergency() + "\n");
-        }
-        JOptionPane.showMessageDialog(this, new JScrollPane(sortedPatientsTextArea), "Sorted Patients", JOptionPane.INFORMATION_MESSAGE);
+   // Method to display the "View Patients Sorted by Emergency Level" panel
+// Method to display the "View Patients Sorted by Emergency Level" panel with Booking ID
+private void viewPatientsSortedPanel() {
+    Color creamColor = new Color(255, 253, 208);
+    LineBorder highlightedBorder = new LineBorder(Color.BLUE, 3); // Blue border with thickness 3
+
+    // Main panel for viewing sorted patients
+    JPanel viewPatientsPanel = new JPanel(new BorderLayout(10, 10)); // Add outer border spacing
+    viewPatientsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Inner spacing
+    viewPatientsPanel.setBackground(creamColor);
+
+    // Title label
+    JLabel titleLabel = new JLabel("Patients Sorted by Emergency Level", JLabel.CENTER);
+    titleLabel.setFont(new Font("Serif", Font.BOLD, 30));
+    titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0)); // Add bottom spacing
+    viewPatientsPanel.add(titleLabel, BorderLayout.NORTH);
+
+    // Table for displaying sorted patients with Booking ID included
+    String[] columnNames = {"Booking ID", "Patient Name", "Emergency Level", "Appointment Date"};
+    List<Patient> sortedPatients = schedule.sortPatientsByPriority();
+    String[][] data = new String[sortedPatients.size()][4];
+
+    for (int i = 0; i < sortedPatients.size(); i++) {
+        Patient patient = sortedPatients.get(i);
+        data[i][0] = patient.getBookingId();
+        data[i][1] = patient.getPatientName();
+        data[i][2] = String.valueOf(patient.getLevelOfEmergency());
+        data[i][3] = patient.getAppointementDate().toString();
     }
 
+    JTable patientTable = new JTable(data, columnNames);
+    patientTable.setFont(new Font("Serif", Font.PLAIN, 16));
+    patientTable.setRowHeight(25);
+    patientTable.setEnabled(false); // Make table read-only
+    patientTable.getTableHeader().setFont(new Font("Serif", Font.BOLD, 18));
+    patientTable.getTableHeader().setBackground(new Color(204, 204, 255)); // Light purple for header
+    JScrollPane tableScrollPane = new JScrollPane(patientTable);
+    tableScrollPane.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2)); // Add border to table
+
+    viewPatientsPanel.add(tableScrollPane, BorderLayout.CENTER);
+
+    // Back button
+    JButton backButton = new JButton("Back to Main Menu");
+    backButton.setFont(new Font("Serif", Font.BOLD, 20));
+    backButton.setPreferredSize(new Dimension(200, 50));
+    backButton.setBorder(highlightedBorder);
+    backButton.setBackground(new Color(204, 204, 255));
+    addHoverEffect(backButton); // Add hover effect
+
+    backButton.addActionListener(e -> goBackToMainMenu()); // Action to go back to the main menu
+
+    JPanel buttonPanel = new JPanel();
+    buttonPanel.setBackground(creamColor);
+    buttonPanel.add(backButton);
+
+    viewPatientsPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+    // Replace main content with the sorted patients panel
+    getContentPane().removeAll();
+    getContentPane().add(viewPatientsPanel, BorderLayout.CENTER);
+    revalidate();
+    repaint();
+}
     // Method to treat the next patient
-    private void treatNextPatient() {
-        if (schedule.getScheduledPatients().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No patients to treat.", "Info", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            schedule.treatNextPatient();
-            JOptionPane.showMessageDialog(this, "Next patient treated.", "Info", JOptionPane.INFORMATION_MESSAGE);
-        }
+   // Updated method to display the Treat Patients panel and handle patient treatment
+private void treatPatientsPanel() {
+    Color creamColor = new Color(255, 253, 208);
+    LineBorder highlightedBorder = new LineBorder(Color.BLUE, 3); // Blue border with thickness 3
+
+    // Main panel for treating patients
+    JPanel treatPatientsPanel = new JPanel(new BorderLayout(10, 10));
+    treatPatientsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+    treatPatientsPanel.setBackground(creamColor);
+
+    // Title label
+    JLabel titleLabel = new JLabel("Treat Patients (Priority Order)", JLabel.CENTER);
+    titleLabel.setFont(new Font("Serif", Font.BOLD, 30));
+    titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0)); // Add bottom spacing
+    treatPatientsPanel.add(titleLabel, BorderLayout.NORTH);
+
+    // Table for displaying patients sorted by priority
+    String[] columnNames = {"Booking ID", "Patient Name", "Emergency Level", "Appointment Date"};
+    ArrayList<Patient> scheduledPatients = schedule.getScheduledPatients();
+    ArrayList<Patient> sortedPatients = schedule.sortPatientsByPriority();
+
+    String[][] data = new String[sortedPatients.size()][4];
+    for (int i = 0; i < sortedPatients.size(); i++) {
+        Patient patient = sortedPatients.get(i);
+        data[i][0] = patient.getBookingId();
+        data[i][1] = patient.getPatientName();
+        data[i][2] = String.valueOf(patient.getLevelOfEmergency());
+        data[i][3] = patient.getAppointementDate().toString();
     }
+
+    JTable patientTable = new JTable(data, columnNames);
+    patientTable.setFont(new Font("Serif", Font.PLAIN, 16));
+    patientTable.setRowHeight(25);
+    patientTable.setEnabled(false); // Make table read-only
+    patientTable.getTableHeader().setFont(new Font("Serif", Font.BOLD, 18));
+    patientTable.getTableHeader().setBackground(new Color(204, 204, 255)); // Light purple for header
+    JScrollPane tableScrollPane = new JScrollPane(patientTable);
+    tableScrollPane.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
+
+    treatPatientsPanel.add(tableScrollPane, BorderLayout.CENTER);
+
+    // Button panel for Treat Next and Back buttons
+    JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+    buttonPanel.setBackground(creamColor);
+
+    // Treat Next Patient button
+    JButton treatNextButton = new JButton("Patient Treated");
+    treatNextButton.setFont(new Font("Serif", Font.BOLD, 20));
+    treatNextButton.setBorder(highlightedBorder);
+    treatNextButton.setPreferredSize(new Dimension(200, 50));
+    treatNextButton.setBackground(new Color(204, 255, 204)); // Light green
+
+    treatNextButton.addActionListener(e -> treatNextPatientAndUpdateTable(patientTable));
+
+    // Back button to return to the main menu
+    JButton backButton = new JButton("Back to Main Menu");
+    backButton.setFont(new Font("Serif", Font.BOLD, 20));
+    backButton.setBorder(highlightedBorder);
+    backButton.setPreferredSize(new Dimension(200, 50));
+    addHoverEffect(backButton);
+
+    backButton.addActionListener(e -> goBackToMainMenu());
+
+    buttonPanel.add(treatNextButton);
+    buttonPanel.add(backButton);
+    treatPatientsPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+    // Replace main content with the treat patients panel
+    getContentPane().removeAll();
+    getContentPane().add(treatPatientsPanel, BorderLayout.CENTER);
+    revalidate();
+    repaint();
+}
+
+// Updated method to treat the next patient and dynamically update the table
+private void treatNextPatientAndUpdateTable(JTable patientTable) {
+    if (schedule.getScheduledPatients().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "No patients to treat.", "Info", JOptionPane.INFORMATION_MESSAGE);
+    } else {
+        // Treat the next patient
+        schedule.treatNextPatient();
+        JOptionPane.showMessageDialog(this, "Patient has been treated successfully.", "Info", JOptionPane.INFORMATION_MESSAGE);
+
+        // Update the table with the remaining patients
+        ArrayList<Patient> sortedPatients = schedule.sortPatientsByPriority();
+        String[][] data = new String[sortedPatients.size()][4];
+
+        for (int i = 0; i < sortedPatients.size(); i++) {
+            Patient patient = sortedPatients.get(i);
+            data[i][0] = patient.getBookingId();
+            data[i][1] = patient.getPatientName();
+            data[i][2] = String.valueOf(patient.getLevelOfEmergency());
+            data[i][3] = patient.getAppointementDate().toString();
+        }
+
+        // Update table model
+        patientTable.setModel(new javax.swing.table.DefaultTableModel(data, new String[]{"Booking ID", "Patient Name", "Emergency Level", "Appointment Date"}));
+    }
+}
+
 
     // Method to save patients
     private void savePatients() {
