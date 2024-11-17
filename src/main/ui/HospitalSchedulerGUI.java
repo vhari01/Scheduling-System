@@ -16,10 +16,15 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import Persistence.JsonReader;
+import Persistence.JsonWriter;
 
 public class HospitalSchedulerGUI extends JFrame {
     private Scheduler schedule;
     private List <Specialist> specialists;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
+    private static final String JSON_STORE = "./data/patients.json";
 
     public HospitalSchedulerGUI(Scheduler schedule) {
         this.schedule = schedule;
@@ -47,6 +52,9 @@ public class HospitalSchedulerGUI extends JFrame {
         new Specialist("Immunologist"),
         new Specialist("Ophthalmologist")
         );
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
+        
     
         initializeUI();
     }
@@ -268,10 +276,10 @@ private void viewPatientsSortedPanel() {
     titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0)); // Add bottom spacing
     viewPatientsPanel.add(titleLabel, BorderLayout.NORTH);
 
-    // Table for displaying sorted patients with Booking ID included
-    String[] columnNames = {"Booking ID", "Patient Name", "Emergency Level", "Appointment Date"};
+    // Table for displaying sorted patients with Specialist column included
+    String[] columnNames = {"Booking ID", "Patient Name", "Emergency Level", "Appointment Date", "Specialist"};
     List<Patient> sortedPatients = schedule.sortPatientsByPriority();
-    String[][] data = new String[sortedPatients.size()][4];
+    String[][] data = new String[sortedPatients.size()][5];
 
     for (int i = 0; i < sortedPatients.size(); i++) {
         Patient patient = sortedPatients.get(i);
@@ -279,6 +287,7 @@ private void viewPatientsSortedPanel() {
         data[i][1] = patient.getPatientName();
         data[i][2] = String.valueOf(patient.getLevelOfEmergency());
         data[i][3] = patient.getAppointementDate().toString();
+        data[i][4] = patient.getspecialistRequired().getSpecialistName(); // Assuming `getSpecialist()` returns a Specialist object
     }
 
     JTable patientTable = new JTable(data, columnNames);
@@ -314,9 +323,10 @@ private void viewPatientsSortedPanel() {
     revalidate();
     repaint();
 }
+
     // Method to treat the next patient
    // Updated method to display the Treat Patients panel and handle patient treatment
-private void treatPatientsPanel() {
+   private void treatPatientsPanel() {
     Color creamColor = new Color(255, 253, 208);
     LineBorder highlightedBorder = new LineBorder(Color.BLUE, 3); // Blue border with thickness 3
 
@@ -331,18 +341,19 @@ private void treatPatientsPanel() {
     titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0)); // Add bottom spacing
     treatPatientsPanel.add(titleLabel, BorderLayout.NORTH);
 
-    // Table for displaying patients sorted by priority
-    String[] columnNames = {"Booking ID", "Patient Name", "Emergency Level", "Appointment Date"};
+    // Table for displaying patients sorted by priority, including Specialist column
+    String[] columnNames = {"Booking ID", "Patient Name", "Emergency Level", "Appointment Date", "Specialist"};
     ArrayList<Patient> scheduledPatients = schedule.getScheduledPatients();
     ArrayList<Patient> sortedPatients = schedule.sortPatientsByPriority();
 
-    String[][] data = new String[sortedPatients.size()][4];
+    String[][] data = new String[sortedPatients.size()][5];
     for (int i = 0; i < sortedPatients.size(); i++) {
         Patient patient = sortedPatients.get(i);
         data[i][0] = patient.getBookingId();
         data[i][1] = patient.getPatientName();
         data[i][2] = String.valueOf(patient.getLevelOfEmergency());
         data[i][3] = patient.getAppointementDate().toString();
+        data[i][4] = patient.getspecialistRequired().getSpecialistName(); // Fetch the Specialist name
     }
 
     JTable patientTable = new JTable(data, columnNames);
@@ -389,6 +400,7 @@ private void treatPatientsPanel() {
     repaint();
 }
 
+
 // Updated method to treat the next patient and dynamically update the table
 private void treatNextPatientAndUpdateTable(JTable patientTable) {
     if (schedule.getScheduledPatients().isEmpty()) {
@@ -416,17 +428,72 @@ private void treatNextPatientAndUpdateTable(JTable patientTable) {
 }
 
 
-    // Method to save patients
-    private void savePatients() {
-        // Implement save functionality based on your JSON handling
-        JOptionPane.showMessageDialog(this, "Patients saved successfully!", "Save", JOptionPane.INFORMATION_MESSAGE);
-    }
+// Method to save patients with a confirmation dialog
+private void savePatients() {
+    int userChoice = JOptionPane.showConfirmDialog(
+        this,
+        "Do you want to save the current patient data?",
+        "Save Patients",
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.QUESTION_MESSAGE
+    );
 
-    // Method to load patients
-    private void loadPatients() {
-        // Implement load functionality based on your JSON handling
-        JOptionPane.showMessageDialog(this, "Patients loaded successfully!", "Load", JOptionPane.INFORMATION_MESSAGE);
+    if (userChoice == JOptionPane.YES_OPTION) {
+        try {
+            // Assuming jsonWriter is properly initialized
+            jsonWriter.open();
+            jsonWriter.write(schedule);
+            jsonWriter.close();
+
+            JOptionPane.showMessageDialog(
+                this,
+                "Patients saved successfully!",
+                "Save Successful",
+                JOptionPane.INFORMATION_MESSAGE
+            );
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Error saving patient data: " + e.getMessage(),
+                "Save Failed",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
+}
+
+// Method to load patients with a confirmation dialog
+private void loadPatients() {
+    int userChoice = JOptionPane.showConfirmDialog(
+        this,
+        "Do you want to load patient data? This will overwrite current unsaved data.",
+        "Load Patients",
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.WARNING_MESSAGE
+    );
+
+    if (userChoice == JOptionPane.YES_OPTION) {
+        try {
+            // Assuming jsonReader is properly initialized
+            schedule = jsonReader.read();
+
+            JOptionPane.showMessageDialog(
+                this,
+                "Patients loaded successfully!",
+                "Load Successful",
+                JOptionPane.INFORMATION_MESSAGE
+            );
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Error loading patient data: " + e.getMessage(),
+                "Load Failed",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+}
+
 
     // Method to go back to the main menu
     private void goBackToMainMenu() {
