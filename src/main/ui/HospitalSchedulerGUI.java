@@ -7,11 +7,9 @@ import model.Patient;
 import model.Scheduler;
 import model.Specialist;
 
+
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +24,10 @@ public class HospitalSchedulerGUI extends JFrame {
     private JsonReader jsonReader;
     private static final String JSON_STORE = "./data/patients.json";
 
+
+    // REQUIRES: schedule is not null
+    // MODIFIES: this
+    // EFFECTS: initializes HospitalSchedulerGUI instance with the provided Scheduler object
     public HospitalSchedulerGUI(Scheduler schedule) {
         this.schedule = schedule;
         setTitle("Hospital Scheduler");
@@ -59,21 +61,28 @@ public class HospitalSchedulerGUI extends JFrame {
         initializeUI();
     }
 
-    // Initializes the UI components and main panel layout
+    // MODIFIES: this
+    // EFFECTS: initializes and sets up the main UI components of the application
     private void initializeUI() {
 
-        Color creamColor = new Color(255, 253, 208);
+        JFrame frame = new JFrame("Hospital Scheduler");
+        frame.setSize(800, 600);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        Color Blue = new Color(2, 48, 71); 
         LineBorder highlightedBorder = new LineBorder(Color.BLUE, 3); // Blue border with thickness 3
 
         // Main panel to hold everything
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10)); // Add outer border spacing
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Inner spacing
-        mainPanel.setBackground(creamColor);
+        mainPanel.setBackground(Blue);
     
         // Welcome label
-        JLabel welcomeLabel = new JLabel("Welcome to the Hospital Scheduler", JLabel.CENTER);
-        welcomeLabel.setFont(new Font("Serif", Font.BOLD, 30));
+        JLabel welcomeLabel = new JLabel("Welcome to the Hospital Scheduling System", JLabel.CENTER);
+        welcomeLabel.setFont(new Font("Serif", Font.BOLD, 30)); // Font style and size
+        welcomeLabel.setForeground(new Color(255, 253, 208)); // Cream color for font
         mainPanel.add(welcomeLabel, BorderLayout.NORTH);
+        
         
     
         // Panel to hold the menu options with vertical spacing
@@ -139,6 +148,8 @@ public class HospitalSchedulerGUI extends JFrame {
 
         row4.add(exitButton);
         menuPanel.add(row4);
+
+        
     
         // Add action listeners for each button
         patientButton.addActionListener(e -> showPatientMenu());
@@ -147,12 +158,23 @@ public class HospitalSchedulerGUI extends JFrame {
         saveButton.addActionListener(e -> savePatients());
         loadButton.addActionListener(e -> loadPatients());
         exitButton.addActionListener(e -> System.exit(0));
+        // Set initial button background color to cream
+        patientButton.setBackground(new Color(255, 253, 208));
+        viewSortedButton.setBackground(new Color(255, 253, 208));
+        treatNextButton.setBackground(new Color(255, 253, 208));
+        saveButton.setBackground(new Color(255, 253, 208));
+        loadButton.setBackground(new Color(255, 253, 208));
+        exitButton.setBackground(new Color(255, 253, 208));
 
-        menuPanel.setBackground(creamColor);
-        row1.setBackground(creamColor);
-        row2.setBackground(creamColor);
-        row3.setBackground(creamColor);
-        row4.setBackground(creamColor);
+        // Apply hover effect to all buttons
+        addHoverEffect(patientButton);
+        addHoverEffect(viewSortedButton);
+        addHoverEffect(treatNextButton);
+        addHoverEffect(saveButton);
+        addHoverEffect(loadButton);
+        addHoverEffect(exitButton);
+
+
 
         addHoverEffect(patientButton);
         addHoverEffect(viewSortedButton);
@@ -168,10 +190,11 @@ public class HospitalSchedulerGUI extends JFrame {
     
     
 
-    // Shows the Patient submenu with options to add, cancel, or reschedule an appointment
+    // MODIFIES: this
+    // EFFECTS: displays the patient submenu with its options
     private void showPatientMenu() {
-        Color creamColor = new Color(255, 253, 208);
-        LineBorder highlightedBorder = new LineBorder(Color.BLUE, 3); // Blue border with thickness 3
+        Color creamColor = new Color(2, 48, 71);
+        LineBorder highlightedBorder = new LineBorder(Color.CYAN, 3); // Blue border with thickness 3
     
         // Set up the panel with BoxLayout for vertical stacking of buttons
         JPanel patientMenuPanel = new JPanel();
@@ -243,26 +266,30 @@ public class HospitalSchedulerGUI extends JFrame {
         repaint();
     }
     
-    // Method to add hover effect to buttons
+    // REQUIRES: button is not null
+    // MODIFIES: button
+    // EFFECTS: adds hover effect to the specified button
     private void addHoverEffect(JButton button) {
         button.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent e) {
-                button.setBackground(new Color(204, 204, 255)); // Light purple on hover
+                button.setBackground(new Color(255, 223, 186)); // Light peach on hover
             }
     
             @Override
             public void mouseExited(java.awt.event.MouseEvent e) {
-                button.setBackground(null); // Revert to original background color
+                button.setBackground(new Color(255, 253, 208)); // Cream color for default
             }
         });
     }
+    
 
-    // Method to view patients sorted by emergency level
-   // Method to display the "View Patients Sorted by Emergency Level" panel
-// Method to display the "View Patients Sorted by Emergency Level" panel with Booking ID
+// REQUIRES: schedule is not null
+// MODIFIES: this
+// EFFECTS: displays a panel with a sorted list of patients by emergency level
+
 private void viewPatientsSortedPanel() {
-    Color creamColor = new Color(255, 253, 208);
+    Color creamColor = new Color(2, 48, 71);
     LineBorder highlightedBorder = new LineBorder(Color.BLUE, 3); // Blue border with thickness 3
 
     // Main panel for viewing sorted patients
@@ -274,6 +301,7 @@ private void viewPatientsSortedPanel() {
     JLabel titleLabel = new JLabel("Patients Sorted by Emergency Level", JLabel.CENTER);
     titleLabel.setFont(new Font("Serif", Font.BOLD, 30));
     titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0)); // Add bottom spacing
+    titleLabel.setForeground(new Color(255, 253, 208)); // Cream color for font
     viewPatientsPanel.add(titleLabel, BorderLayout.NORTH);
 
     // Table for displaying sorted patients with Specialist column included
@@ -324,10 +352,12 @@ private void viewPatientsSortedPanel() {
     repaint();
 }
 
-    // Method to treat the next patient
-   // Updated method to display the Treat Patients panel and handle patient treatment
+    // REQUIRES: schedule is not null
+    // MODIFIES: this
+    // EFFECTS: displays a panel with patients sorted by priority for treatment, including a "Treat Next" button
+
    private void treatPatientsPanel() {
-    Color creamColor = new Color(255, 253, 208);
+    Color creamColor = new Color(2, 48, 71);
     LineBorder highlightedBorder = new LineBorder(Color.BLUE, 3); // Blue border with thickness 3
 
     // Main panel for treating patients
@@ -338,7 +368,8 @@ private void viewPatientsSortedPanel() {
     // Title label
     JLabel titleLabel = new JLabel("Treat Patients (Priority Order)", JLabel.CENTER);
     titleLabel.setFont(new Font("Serif", Font.BOLD, 30));
-    titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0)); // Add bottom spacing
+    titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+    titleLabel.setForeground(new Color(255, 253, 208)); // Add bottom spacing
     treatPatientsPanel.add(titleLabel, BorderLayout.NORTH);
 
     // Table for displaying patients sorted by priority, including Specialist column
@@ -401,7 +432,10 @@ private void viewPatientsSortedPanel() {
 }
 
 
-// Updated method to treat the next patient and dynamically update the table
+// REQUIRES: schedule is not null, schedule.getScheduledPatients() is not empty
+// MODIFIES: this
+// EFFECTS: treats the next patient, updates the patient table with the remaining scheduled patients
+
 private void treatNextPatientAndUpdateTable(JTable patientTable) {
     if (schedule.getScheduledPatients().isEmpty()) {
         JOptionPane.showMessageDialog(this, "No patients to treat.", "Info", JOptionPane.INFORMATION_MESSAGE);
@@ -422,13 +456,16 @@ private void treatNextPatientAndUpdateTable(JTable patientTable) {
             data[i][3] = patient.getAppointementDate().toString();
         }
 
-        // Update table model
+        
         patientTable.setModel(new javax.swing.table.DefaultTableModel(data, new String[]{"Booking ID", "Patient Name", "Emergency Level", "Appointment Date"}));
     }
 }
 
 
-// Method to save patients with a confirmation dialog
+// REQUIRES: jsonWriter is not null, schedule is not null
+// MODIFIES: this
+// EFFECTS: prompts the user to save patient data to a JSON file and performs the save operation
+
 private void savePatients() {
     int userChoice = JOptionPane.showConfirmDialog(
         this,
@@ -462,7 +499,10 @@ private void savePatients() {
     }
 }
 
-// Method to load patients with a confirmation dialog
+// REQUIRES: jsonReader is properly initialized, schedule is mutable
+// MODIFIES: this
+// EFFECTS: prompts the user to confirm if they want to load patient data, and if confirmed, loads the patient data from a JSON file using jsonReader, updating the schedule with the loaded data; displays success or error message based on the outcome.
+
 private void loadPatients() {
     int userChoice = JOptionPane.showConfirmDialog(
         this,
@@ -495,13 +535,19 @@ private void loadPatients() {
 }
 
 
-    // Method to go back to the main menu
+    
+// MODIFIES: this
+// EFFECTS: removes all components from the current content pane, initializes the main menu UI again, and repaints the window to display the updated UI.
+
     private void goBackToMainMenu() {
         getContentPane().removeAll();
         initializeUI();
         revalidate();
         repaint();
     }
+    // REQUIRES: specialists list is not empty, schedule is not null
+// MODIFIES: this
+// EFFECTS: opens a form to add a new patient, validates the input data for correctness (age, emergency level, appointment date), and if valid, creates a new Patient object and adds it to the schedule; if canceled, no changes are made.
 
     private void addPatient() {
         // Set up the form panel with a nice border and background
@@ -600,7 +646,10 @@ private void loadPatients() {
             validInput = processForm(panel, nameField, ageField, emergencyLevelField, specialistComboBox, dateField, hasInsuranceCheckbox, today);
         }
     }
-    
+    // REQUIRES: schedule is not null, specialists list is not empty
+// MODIFIES: this
+// EFFECTS: processes the form input from the add patient UI, validating the age, emergency level, and appointment date; if valid, adds a new Patient object to the schedule and displays a success message; if invalid, displays an error message and keeps the form open for correction.
+
     private boolean processForm(JPanel panel, JTextField nameField, JTextField ageField, JTextField emergencyLevelField, JComboBox<Specialist> specialistComboBox, JTextField dateField, JCheckBox hasInsuranceCheckbox, LocalDate today) {
         try {
             // Gather input values
@@ -652,7 +701,9 @@ private void loadPatients() {
         }
     }
     
-
+// REQUIRES: schedule is not null, bookingIdField is not empty
+// MODIFIES: this, schedule
+// EFFECTS: processes the form input from the user, cancels the appointment based on the provided booking ID, and shows confirmation messages
     private void cancelAppointment() {
         JPanel cancelPanel = new JPanel(new GridBagLayout());
         cancelPanel.setBackground(new Color(255, 253, 208));
@@ -750,7 +801,9 @@ private void loadPatients() {
     }
     
     
-
+    // REQUIRES: schedule is not null, bookingIdField and newDateField are not empty, newDateField contains a valid future date
+// MODIFIES: this, schedule
+// EFFECTS: processes the form input from the user, reschedules the appointment for the provided booking ID, and shows confirmation messages
     private void rescheduleAppointment() {
         JPanel reschedulePanel = new JPanel(new GridBagLayout());
         reschedulePanel.setBackground(new Color(255, 253, 208));
@@ -872,7 +925,9 @@ private void loadPatients() {
 
 
     public static void main(String[] args) {
+
         Scheduler scheduler = new Scheduler(); // Assuming Scheduler class is correctly set up
+        
         HospitalSchedulerGUI gui = new HospitalSchedulerGUI(scheduler);
         gui.setVisible(true);
     }
