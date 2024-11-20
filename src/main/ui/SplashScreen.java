@@ -11,20 +11,15 @@ public class SplashScreen {
     private static Timer progressTimer;
     private static int progress = 0;
 
-    /**
-     * @requires None
-     * @modifies None
-     * @effects Launches the splash screen and starts the application.
-     */
+    // EFFECTS: Launches the splash screen and starts the application.
+
     public static void main(String[] args) {
         createSplashScreen();
     }
 
-    
-      
-    /* EFFECTS: Creates and displays a splash screen with a progress bar and 
-               launches the main application after a delay. */
-     
+    // EFFECTS: Creates and displays a splash screen with a progress bar and
+    // launches the main application after a delay.
+
     private static void createSplashScreen() {
         splashScreen = new JFrame();
         splashScreen.setSize(1000, 800);
@@ -114,7 +109,7 @@ public class SplashScreen {
             }
         });
         progressTimer.start();
-
+        //Starts the splashscreen and then disposes of the contents and starts the scheduler thereafter
         Timer timer = new Timer(3400, e -> {
             splashScreen.setVisible(false);
             splashScreen.dispose();
