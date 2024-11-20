@@ -36,19 +36,16 @@ public class TestScheduler extends TestClass {
 
     @Test
     public void testCancelAppointmentNameMismatch() {
-        String bookingId = scheduler.addPatient(p1); // Assuming p1 has "Max" as name
         assertFalse(scheduler.cancelAppointment("InvalidBookingId")); // Pass an invalid booking ID
     }
 
     @Test
     public void testCancelAppointmentAgeMismatch() {
-        String bookingId = scheduler.addPatient(p1); // Assuming p1 is 23 years old
         assertFalse(scheduler.cancelAppointment("InvalidBookingId")); // Pass an invalid booking ID
     }
 
     @Test
     public void testCancelAppointmentDateMismatch() {
-        String bookingId = scheduler.addPatient(p1); // Assuming p1 has an appointment on 2024-10-13
         assertFalse(scheduler.cancelAppointment("InvalidBookingId")); // Pass an invalid booking ID
     }
 

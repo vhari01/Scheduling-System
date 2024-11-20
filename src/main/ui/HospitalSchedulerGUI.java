@@ -13,8 +13,8 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import Persistence.JsonReader;
-import Persistence.JsonWriter;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
 public class HospitalSchedulerGUI extends JFrame {
     private Scheduler schedule;
@@ -33,25 +33,20 @@ public class HospitalSchedulerGUI extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 800);
         setLocationRelativeTo(null);
+
+        // Initialize specialists list
         this.specialists = Arrays.asList(
-                new Specialist("Select"),
-                new Specialist("Cardiologist"),
-                new Specialist("Neurologist"),
-                new Specialist("Orthopedic"),
-                new Specialist("Dermatologist"),
-                new Specialist("Pediatrician"),
-                new Specialist("Endocrinologist"),
-                new Specialist("Gastroenterologist"),
-                new Specialist("Infectiologist"),
-                new Specialist("Nephrologist"),
-                new Specialist("Psychiatrist"),
-                new Specialist("Endocrinologist"),
-                new Specialist("Rheumatologist"),
-                new Specialist("Pulmonologist"),
-                new Specialist("Radiologist"),
-                new Specialist("Hematologist"),
-                new Specialist("Immunologist"),
-                new Specialist("Ophthalmologist"));
+                new Specialist("Select"), new Specialist("Cardiologist"),
+                new Specialist("Neurologist"), new Specialist("Orthopedic"),
+                new Specialist("Dermatologist"), new Specialist("Pediatrician"),
+                new Specialist("Endocrinologist"), new Specialist("Gastroenterologist"),
+                new Specialist("Infectiologist"), new Specialist("Nephrologist"),
+                new Specialist("Psychiatrist"), new Specialist("Endocrinologist"),
+                new Specialist("Rheumatologist"), new Specialist("Pulmonologist"),
+                new Specialist("Radiologist"), new Specialist("Hematologist"),
+                new Specialist("Immunologist"), new Specialist("Ophthalmologist"));
+
+        // Initialize JSON handlers
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
 
@@ -60,24 +55,25 @@ public class HospitalSchedulerGUI extends JFrame {
 
     // MODIFIES: this
     // EFFECTS: initializes and sets up the main UI components of the application
+    @SuppressWarnings("methodlength")
     private void initializeUI() {
 
         JFrame frame = new JFrame("Hospital Scheduler");
         frame.setSize(800, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        Color Blue = new Color(2, 48, 71);
-        LineBorder highlightedBorder = new LineBorder(Color.BLUE, 3); 
+        Color blue = new Color(2, 48, 71);
+        LineBorder highlightedBorder = new LineBorder(Color.BLUE, 3);
 
         // Main panel to hold everything
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10)); // Add outer border spacing
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Inner spacing
-        mainPanel.setBackground(Blue);
+        mainPanel.setBackground(blue);
 
         // Welcome label
         JLabel welcomeLabel = new JLabel("Welcome to the Hospital Scheduling System", JLabel.CENTER);
-        welcomeLabel.setFont(new Font("Serif", Font.BOLD, 30)); 
-        welcomeLabel.setForeground(new Color(255, 253, 208)); 
+        welcomeLabel.setFont(new Font("Serif", Font.BOLD, 30));
+        welcomeLabel.setForeground(new Color(255, 253, 208));
         mainPanel.add(welcomeLabel, BorderLayout.NORTH);
 
         // Panel to hold the menu options with vertical spacing
@@ -179,54 +175,26 @@ public class HospitalSchedulerGUI extends JFrame {
 
     // MODIFIES: this
     // EFFECTS: displays the patient submenu with its options
+    @SuppressWarnings("methodlength")
     private void showPatientMenu() {
         Color creamColor = new Color(2, 48, 71);
         LineBorder highlightedBorder = new LineBorder(Color.CYAN, 3); // Blue border with thickness 3
-
-        // Set up the panel with BoxLayout for vertical stacking of buttons
         JPanel patientMenuPanel = new JPanel();
-        patientMenuPanel.setLayout(new BoxLayout(patientMenuPanel, BoxLayout.Y_AXIS)); // Stack components vertically
-        patientMenuPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Inner spacing
+        patientMenuPanel.setLayout(new BoxLayout(patientMenuPanel, BoxLayout.Y_AXIS));
+        patientMenuPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         patientMenuPanel.setBackground(creamColor);
 
-        // Define larger button dimensions (width: 500, height: 150)
         Dimension buttonSize = new Dimension(500, 150);
+        JButton addPatientButton = createButton("Add Patient", buttonSize, highlightedBorder);
+        JButton cancelAppointmentButton = createButton("Cancel Appointment", buttonSize, highlightedBorder);
+        JButton rescheduleAppointmentButton = createButton("Reschedule Appointment", buttonSize, highlightedBorder);
+        JButton backButton = createButton("Back to Main Menu", buttonSize, highlightedBorder);
 
-        // Create the Add Patient button
-        JButton addPatientButton = new JButton("Add Patient");
-        addPatientButton.setFont(new Font("Serif", Font.BOLD, 20));
-        addPatientButton.setPreferredSize(buttonSize);
-        addPatientButton.setMaximumSize(buttonSize);
-        addPatientButton.setBorder(highlightedBorder);
-
-        // Create the Cancel Appointment button
-        JButton cancelAppointmentButton = new JButton("Cancel Appointment");
-        cancelAppointmentButton.setFont(new Font("Serif", Font.BOLD, 20));
-        cancelAppointmentButton.setPreferredSize(buttonSize);
-        cancelAppointmentButton.setMaximumSize(buttonSize);
-        cancelAppointmentButton.setBorder(highlightedBorder);
-
-        // Create the Reschedule Appointment button
-        JButton rescheduleAppointmentButton = new JButton("Reschedule Appointment");
-        rescheduleAppointmentButton.setFont(new Font("Serif", Font.BOLD, 20));
-        rescheduleAppointmentButton.setPreferredSize(buttonSize);
-        rescheduleAppointmentButton.setMaximumSize(buttonSize);
-        rescheduleAppointmentButton.setBorder(highlightedBorder);
-
-        // Create the Back button
-        JButton backButton = new JButton("Back to Main Menu");
-        backButton.setFont(new Font("Serif", Font.BOLD, 20));
-        backButton.setPreferredSize(buttonSize);
-        backButton.setMaximumSize(buttonSize);
-        backButton.setBorder(highlightedBorder);
-
-        // Add mouse hover effects
         addHoverEffect(addPatientButton);
         addHoverEffect(cancelAppointmentButton);
         addHoverEffect(rescheduleAppointmentButton);
         addHoverEffect(backButton);
 
-        // Add vertical space between the buttons
         patientMenuPanel.add(addPatientButton);
         patientMenuPanel.add(Box.createVerticalStrut(20));
         patientMenuPanel.add(cancelAppointmentButton);
@@ -235,22 +203,33 @@ public class HospitalSchedulerGUI extends JFrame {
         patientMenuPanel.add(Box.createVerticalStrut(20));
         patientMenuPanel.add(backButton);
 
-        // Center the patient menu panel inside a flow layout container
         JPanel centeredPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         centeredPanel.setBackground(creamColor);
         centeredPanel.add(patientMenuPanel);
 
-        // Add action listeners
-        addPatientButton.addActionListener(e -> addPatient());
-        cancelAppointmentButton.addActionListener(e -> cancelAppointment());
-        rescheduleAppointmentButton.addActionListener(e -> rescheduleAppointment());
-        backButton.addActionListener(e -> goBackToMainMenu());
+        addActionListeners(addPatientButton, cancelAppointmentButton, rescheduleAppointmentButton, backButton);
 
-        // Replace main content with the patient submenu
         getContentPane().removeAll();
         getContentPane().add(centeredPanel, BorderLayout.CENTER);
         revalidate();
         repaint();
+    }
+
+    private JButton createButton(String text, Dimension size, LineBorder border) {
+        JButton button = new JButton(text);
+        button.setFont(new Font("Serif", Font.BOLD, 20));
+        button.setPreferredSize(size);
+        button.setMaximumSize(size);
+        button.setBorder(border);
+        return button;
+    }
+
+    private void addActionListeners(JButton addPatientButton, JButton cancelAppointmentButton,
+            JButton rescheduleAppointmentButton, JButton backButton) {
+        addPatientButton.addActionListener(e -> addPatient());
+        cancelAppointmentButton.addActionListener(e -> cancelAppointment());
+        rescheduleAppointmentButton.addActionListener(e -> rescheduleAppointment());
+        backButton.addActionListener(e -> goBackToMainMenu());
     }
 
     // REQUIRES: button is not null
@@ -273,7 +252,7 @@ public class HospitalSchedulerGUI extends JFrame {
     // REQUIRES: schedule is not null
     // MODIFIES: this
     // EFFECTS: displays a panel with a sorted list of patients by emergency level
-
+    @SuppressWarnings("methodlength")
     private void viewPatientsSortedPanel() {
         Color creamColor = new Color(2, 48, 71);
         LineBorder highlightedBorder = new LineBorder(Color.BLUE, 3); // Blue border with thickness 3
@@ -343,7 +322,7 @@ public class HospitalSchedulerGUI extends JFrame {
     // MODIFIES: this
     // EFFECTS: displays a panel with patients sorted by priority for treatment,
     // including a "Treat Next" button
-
+    @SuppressWarnings("methodlength")
     private void treatPatientsPanel() {
         Color creamColor = new Color(2, 48, 71);
         LineBorder highlightedBorder = new LineBorder(Color.BLUE, 3); // Blue border with thickness 3
@@ -362,7 +341,6 @@ public class HospitalSchedulerGUI extends JFrame {
 
         // Table for displaying patients sorted by priority, including Specialist column
         String[] columnNames = { "Booking ID", "Patient Name", "Emergency Level", "Appointment Date", "Specialist" };
-        ArrayList<Patient> scheduledPatients = schedule.getScheduledPatients();
         ArrayList<Patient> sortedPatients = schedule.sortPatientsByPriority();
 
         String[][] data = new String[sortedPatients.size()][5];
@@ -458,8 +436,7 @@ public class HospitalSchedulerGUI extends JFrame {
     private void savePatients() {
         int userChoice = JOptionPane.showConfirmDialog(
                 this,
-                "Do you want to save the current patient data?",
-                "Save Patients",
+                "Do you want to save the current patient data?", "Save Patients",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE);
 
@@ -530,13 +507,14 @@ public class HospitalSchedulerGUI extends JFrame {
         revalidate();
         repaint();
     }
+
     // REQUIRES: specialists list is not empty, schedule is not null
     // MODIFIES: this
     // EFFECTS: opens a form to add a new patient, validates the input data for
     // correctness (age, emergency level, appointment date), and if valid, creates a
     // new Patient object and adds it to the schedule; if canceled, no changes are
     // made.
-
+    @SuppressWarnings("methodlength")
     private void addPatient() {
         // Set up the form panel with a nice border and background
         JPanel panel = new JPanel();
@@ -640,13 +618,14 @@ public class HospitalSchedulerGUI extends JFrame {
                     hasInsuranceCheckbox, today);
         }
     }
+
     // REQUIRES: schedule is not null, specialists list is not empty
     // MODIFIES: this
     // EFFECTS: processes the form input from the add patient UI, validating the
     // age, emergency level, and appointment date; if valid, adds a new Patient
     // object to the schedule and displays a success message; if invalid, displays
     // an error message and keeps the form open for correction.
-
+    @SuppressWarnings("methodlength")
     private boolean processForm(JPanel panel, JTextField nameField, JTextField ageField, JTextField emergencyLevelField,
             JComboBox<Specialist> specialistComboBox, JTextField dateField, JCheckBox hasInsuranceCheckbox,
             LocalDate today) {
@@ -707,6 +686,7 @@ public class HospitalSchedulerGUI extends JFrame {
     // MODIFIES: this, schedule
     // EFFECTS: processes the form input from the user, cancels the appointment
     // based on the provided booking ID, and shows confirmation messages
+    @SuppressWarnings("methodlength")
     private void cancelAppointment() {
         JPanel cancelPanel = new JPanel(new GridBagLayout());
         cancelPanel.setBackground(new Color(255, 253, 208));
@@ -810,6 +790,7 @@ public class HospitalSchedulerGUI extends JFrame {
     // MODIFIES: this, schedule
     // EFFECTS: processes the form input from the user, reschedules the appointment
     // for the provided booking ID, and shows confirmation messages
+    @SuppressWarnings("methodlength")
     private void rescheduleAppointment() {
         JPanel reschedulePanel = new JPanel(new GridBagLayout());
         reschedulePanel.setBackground(new Color(255, 253, 208));
@@ -886,7 +867,8 @@ public class HospitalSchedulerGUI extends JFrame {
                 int confirmation = JOptionPane.showConfirmDialog(
                         this,
                         String.format(
-                                "Reschedule appointment for:\n\nPatient Name: %s\nCurrent Appointment Date: %s\nNew Appointment Date: %s",
+                                "Reschedule appointment for:\n\nPatient Name: %s\nCurrent Appointment Date: %s\n" 
+                                       + "New Appointment Date: %s",
                                 patientToReschedule.getPatientName(),
                                 patientToReschedule.getAppointementDate(),
                                 newAppointmentDate),

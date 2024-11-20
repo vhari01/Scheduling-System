@@ -19,7 +19,7 @@ public class SplashScreen {
 
     // EFFECTS: Creates and displays a splash screen with a progress bar and
     // launches the main application after a delay.
-
+    @SuppressWarnings("methodlength")
     private static void createSplashScreen() {
         splashScreen = new JFrame();
         splashScreen.setSize(1000, 800);

@@ -6,8 +6,8 @@ import model.Specialist;
 
 import java.util.*;
 
-import Persistence.JsonReader;
-import Persistence.JsonWriter;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
 import java.time.LocalDate;
 
@@ -173,7 +173,6 @@ public class HospitalScheduler {
         String bookingId = schedule.addPatient(newPatient);
         System.out.println("Patient added successfully!Booking ID: " + bookingId);
     }
-    
 
     // MODIFIES: this
     // EFFECTS: cancels a patients appointment if it exists
@@ -191,6 +190,7 @@ public class HospitalScheduler {
         }
     }
 
+    @SuppressWarnings("methodlength")
     public void reschedulePatient() {
         sc.nextLine(); 
         System.out.println("Enter booking ID:");
@@ -228,7 +228,6 @@ public class HospitalScheduler {
             System.out.println("Unable to reschedule appointment. Please try again.");
         }
     }
-    
 
     // MODIFIES: this
     // EFFECTS: compare patients and sorts them out

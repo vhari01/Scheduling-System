@@ -1,4 +1,4 @@
-package Persistence;
+package persistence;
 
 import model.Patient;
 import model.Scheduler;

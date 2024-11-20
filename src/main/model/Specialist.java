@@ -25,6 +25,7 @@ public class Specialist {
         json.put("specialistName", getSpecialistName());
         return json;
     }
+
     public String toString() {
         return specialistName;
     }

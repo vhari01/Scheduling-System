@@ -27,6 +27,7 @@ public class TestSpecialist {
     public void testSetSpecialistName() {
         specialist.setSpecialistName("Neurologist");
         assertEquals("Neurologist", specialist.getSpecialistName(), "Set specialist name should change the name correctly.");
+        assertEquals("Neurologist",specialist.toString());
     }
     
 }
