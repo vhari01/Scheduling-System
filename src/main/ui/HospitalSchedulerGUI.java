@@ -479,7 +479,7 @@ public class HospitalSchedulerGUI extends JFrame {
 
         if (userChoice == JOptionPane.YES_OPTION) {
             try {
-                // Assuming jsonReader is properly initialized
+                
                 schedule = jsonReader.read();
 
                 JOptionPane.showMessageDialog(

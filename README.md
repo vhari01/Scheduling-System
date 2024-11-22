@@ -29,8 +29,15 @@ PHASE 3:
 
 # Instructions for End User
 
-- You can add Patients by adding their information, then you can add the patient to a priority list.
-- You can add multiple patients to the list and manipulate them.
-- You can remove the treated patients from the priority list depending on their emergency level.
-- You can save the patients that are added to the list.
-- You can reload the state of my application by clicking the reload button to adn get the previously modified application. 
+- You can start the application by running the SplashScreen class which wil run the background panel and open up the GUI.
+- You can add patients in the scheduling system by clcking on the button Patient from the main panel, then clicking add Patient. Then enter the patient information and press enter
+- You can add multiple patients the same way to a priority list. All the patients will have a unique booking Id assigned to them.
+- You can check the patients sorted in the list by clicking on the "view sorted patients" which will show you a table of patients that has all the patients sorted by emergecy
+- You can remove the treated patients from the list by clicking on "Treat next patient button" which will remove the patient at the top of the list which was already been sorted.
+- You can also reschedule or cancel a patients appointment by Clicking on the "Patient" button in the main panel and then select "Cancel" or "Reschedule" button.
+- When you click the "Cancel" button a new panel will open and then just enter the patient booking Id and it will cancel the patients appointment with that booking id
+- When you click the "Reschedule" button a panel will open up and you can enter the booking id and the new appointment date and this will reschedule the patient's appointment to the new added date
+- You can move back to main panel from any panel just by clicking "back to main menu" button.
+- You can also save the current application status by clicking on the "Save" button.
+- You can Load the last saved application staus by clicking on the "Load" button (only works if you have saved previously).
+- You can exit the application by clicking on the "Exit" button.

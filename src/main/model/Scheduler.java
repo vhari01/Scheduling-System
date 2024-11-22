@@ -23,9 +23,20 @@ public class Scheduler {
     public String addPatient(Patient p1) {
         String bookingId = generateBookingId();
         p1.setBookingId(bookingId);
-        listOfPatients.add(p1);
+        insertPatientInSortedOrder(p1); // Add to sorted position
         return bookingId;
     }
+    
+    public void insertPatientInSortedOrder(Patient patient) {
+        int position = 0;
+        for (; position < listOfPatients.size(); position++) {
+            if (patient.compareTo(listOfPatients.get(position)) < 0) {
+                break; // Find the right spot
+            }
+        }
+        listOfPatients.add(position, patient); // Insert at correct position
+    }
+    
 
     // EFFECTS : Generates a random unique booking id
     public String generateBookingId() {
@@ -65,17 +76,21 @@ public class Scheduler {
     // EFFECTS: changes the current appointment date to a new appoitment date
     public boolean rescheduleAppointment(String bookingId, LocalDate newAppointmentDate) {
         if (newAppointmentDate.isBefore(LocalDate.now())) {
-            return false;
+            return false; // Do not allow past dates
         }
-
-        for (Patient patient : listOfPatients) {
+    
+        for (int i = 0; i < listOfPatients.size(); i++) {
+            Patient patient = listOfPatients.get(i);
             if (patient.getBookingId().equals(bookingId)) {
-                patient.setAppointmentDate(newAppointmentDate);
+                listOfPatients.remove(i); 
+                patient.setAppointmentDate(newAppointmentDate); 
+                insertPatientInSortedOrder(patient); 
                 return true;
             }
         }
-        return false;
+        return false; 
     }
+    
 
     // REQUIRES: a list consisting of patients
     // EFFECTS: returns a new list of patients sorted by emergency level in
@@ -103,6 +118,10 @@ public class Scheduler {
 
     public ArrayList<Patient> getScheduledPatients() {
         return new ArrayList<>(this.listOfPatients);
+    }
+    
+    public void setListOfPatients(ArrayList<Patient> newList) {
+        this.listOfPatients = newList;
     }
 
 }

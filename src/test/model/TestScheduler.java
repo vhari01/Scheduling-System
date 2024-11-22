@@ -22,8 +22,8 @@ public class TestScheduler extends TestClass {
         scheduler.addPatient(p3);
         scheduler.addPatient(p4);
         assertEquals(4, scheduler.getScheduledPatients().size());
-        assertEquals(p1, scheduler.getScheduledPatients().get(0));
-        assertEquals(p2, scheduler.getScheduledPatients().get(1));
+        assertEquals(p2, scheduler.getScheduledPatients().get(0));
+        assertEquals(p1, scheduler.getScheduledPatients().get(1));
         assertEquals(p3, scheduler.getScheduledPatients().get(2));
         assertEquals(p4, scheduler.getScheduledPatients().get(3));
     }
@@ -140,8 +140,25 @@ public class TestScheduler extends TestClass {
         assertEquals(newDate, p1.getAppointementDate()); 
         assertTrue(p1.getBookingId().equals(bookingId)); 
     }
+    @Test
+    void testSetListOfPatients() {
+        ArrayList<Patient> newPatientsList = new ArrayList<>();
+        newPatientsList.add(p1);
+        newPatientsList.add(p2);
+        newPatientsList.add(p3);
+
+        // Act: Call setListOfPatients
+        scheduler.setListOfPatients(newPatientsList);
+
+        // Assert: Verify the list in scheduler matches the new list
+        ArrayList<Patient> retrievedPatientsList = scheduler.getScheduledPatients();
+        assertEquals(newPatientsList.size(), retrievedPatientsList.size(), "The list sizes should match.");
+        assertTrue(retrievedPatientsList.containsAll(newPatientsList), "The new patients list should match exactly.");
+        assertEquals(p1, retrievedPatientsList.get(0), "The first patient should be Max.");
+        assertEquals(p2, retrievedPatientsList.get(1), "The second patient should be Jack.");
+        assertEquals(p3, retrievedPatientsList.get(2), "The third patient should be Gil.");
+    }
+
     
-
-
    
 }
