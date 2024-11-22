@@ -28,13 +28,14 @@ class JsonReaderTest {
         JsonReader reader = new JsonReader("./data/testReaderEmptyScheduler.json");
         try {
             Scheduler scheduler = reader.read();
-            assertEquals(0, scheduler.getScheduledPatients().size());  
+            assertEquals(0, scheduler.getScheduledPatients().size());
         } catch (IOException e) {
             fail("Couldn't read from file");
         }
     }
 
     @Test
+    @SuppressWarnings("methodlength")
     void testReaderGeneralScheduler() {
         JsonReader reader = new JsonReader("./data/testReaderPatient.json");
         try {

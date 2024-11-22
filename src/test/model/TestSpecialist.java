@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TestSpecialist {
-     private Specialist specialist;
+    private Specialist specialist;
 
     @BeforeEach
     void setUp() {
@@ -20,14 +20,16 @@ public class TestSpecialist {
 
     @Test
     public void testGetSpecialistName() {
-        assertEquals("Cardiologist", specialist.getSpecialistName(), "Get specialist name should return the correct name.");
+        assertEquals("Cardiologist", specialist.getSpecialistName(),
+                "Get specialist name should return the correct name.");
     }
 
     @Test
     public void testSetSpecialistName() {
         specialist.setSpecialistName("Neurologist");
-        assertEquals("Neurologist", specialist.getSpecialistName(), "Set specialist name should change the name correctly.");
-        assertEquals("Neurologist",specialist.toString());
+        assertEquals("Neurologist", specialist.getSpecialistName(),
+                "Set specialist name should change the name correctly.");
+        assertEquals("Neurologist", specialist.toString());
     }
-    
+
 }

@@ -13,20 +13,19 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class JsonWriterTest {
-    
+
     @Test
     void testWriterInvalidFile() {
-        
+
         try {
             Scheduler scheduler = new Scheduler();
             JsonWriter writer = new JsonWriter("./data/my\0illegal:fileName.json");
             writer.open();
             fail("IOException was expected");
         } catch (FileNotFoundException e) {
-            
+            System.out.println("");
         }
-        }
-        
+    }
 
     @Test
     void testWriterEmptyScheduler() {
@@ -39,7 +38,7 @@ public class JsonWriterTest {
 
             JsonReader reader = new JsonReader("./data/testWriterEmptyScheduler.json");
             scheduler = reader.read();
-            assertEquals(0, scheduler.getScheduledPatients().size()); 
+            assertEquals(0, scheduler.getScheduledPatients().size());
         } catch (IOException e) {
             fail("Exception should not have been thrown");
         }
@@ -76,7 +75,3 @@ public class JsonWriterTest {
         }
     }
 }
-
-
-    
-
