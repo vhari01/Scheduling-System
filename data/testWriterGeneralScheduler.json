@@ -1,0 +1,8 @@
+{"patients": [{
+    "emergencyLevel": 2,
+    "specialist": {"specialistName": "Cardiologist"},
+    "name": "John Doe",
+    "hasInsurance": true,
+    "appointmentDate": "2024-12-13",
+    "age": 30
+}]}

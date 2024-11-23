@@ -1,0 +1,26 @@
+{"patients": [
+    {
+        "emergencyLevel": 5,
+        "specialist": {"specialistName": "Cardiologist"},
+        "name": "5",
+        "hasInsurance": false,
+        "appointmentDate": "2024-11-22",
+        "age": 5
+    },
+    {
+        "emergencyLevel": 4,
+        "specialist": {"specialistName": "Cardiologist"},
+        "name": "4",
+        "hasInsurance": false,
+        "appointmentDate": "2024-11-22",
+        "age": 4
+    },
+    {
+        "emergencyLevel": 1,
+        "specialist": {"specialistName": "Cardiologist"},
+        "name": "1",
+        "hasInsurance": false,
+        "appointmentDate": "2024-11-22",
+        "age": 1
+    }
+]}
