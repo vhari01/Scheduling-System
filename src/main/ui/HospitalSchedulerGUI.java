@@ -3,9 +3,11 @@ package ui;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
+import model.EventLog;
 import model.Patient;
 import model.Scheduler;
 import model.Specialist;
+import model.Event;
 
 import java.awt.*;
 import java.time.LocalDate;
@@ -144,7 +146,17 @@ public class HospitalSchedulerGUI extends JFrame {
         treatNextButton.addActionListener(e -> treatPatientsPanel());
         saveButton.addActionListener(e -> savePatients());
         loadButton.addActionListener(e -> loadPatients());
-        exitButton.addActionListener(e -> System.exit(0));
+        exitButton.addActionListener(e -> {
+            // Log the exit event
+            EventLog eventLog = EventLog.getInstance();
+            eventLog.logEvent(new Event("Program exited by user."));
+
+            // Print the event log to the console
+            printEventLogToConsole(eventLog);
+
+            // Exit the program
+            System.exit(0);
+        });
         // Set initial button background color to cream
         patientButton.setBackground(new Color(255, 253, 208));
         viewSortedButton.setBackground(new Color(255, 253, 208));
@@ -171,6 +183,12 @@ public class HospitalSchedulerGUI extends JFrame {
         // Add the menuPanel to the main panel and set it as the frame's content pane
         mainPanel.add(menuPanel, BorderLayout.CENTER);
         add(mainPanel);
+    }
+
+    private void printEventLogToConsole(EventLog eventLog) {
+        for (Event event : eventLog) {
+            System.out.println(event);
+        }
     }
 
     // MODIFIES: this
@@ -479,7 +497,7 @@ public class HospitalSchedulerGUI extends JFrame {
 
         if (userChoice == JOptionPane.YES_OPTION) {
             try {
-                
+
                 schedule = jsonReader.read();
 
                 JOptionPane.showMessageDialog(
@@ -867,8 +885,8 @@ public class HospitalSchedulerGUI extends JFrame {
                 int confirmation = JOptionPane.showConfirmDialog(
                         this,
                         String.format(
-                                "Reschedule appointment for:\n\nPatient Name: %s\nCurrent Appointment Date: %s\n" 
-                                       + "New Appointment Date: %s",
+                                "Reschedule appointment for:\n\nPatient Name: %s\nCurrent Appointment Date: %s\n"
+                                        + "New Appointment Date: %s",
                                 patientToReschedule.getPatientName(),
                                 patientToReschedule.getAppointementDate(),
                                 newAppointmentDate),

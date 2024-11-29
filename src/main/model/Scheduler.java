@@ -24,7 +24,9 @@ public class Scheduler {
         String bookingId = generateBookingId();
         p1.setBookingId(bookingId);
         insertPatientInSortedOrder(p1); // Add to sorted position
+        EventLog.getInstance().logEvent(new Event("Patient added: " + p1.getPatientName() + ", Booking ID: " + bookingId));
         return bookingId;
+        
     }
     
     public void insertPatientInSortedOrder(Patient patient) {
@@ -35,6 +37,8 @@ public class Scheduler {
             }
         }
         listOfPatients.add(position, patient); // Insert at correct position
+        EventLog.getInstance().logEvent(new Event("Patient reordered: " + patient.getPatientName()));
+
     }
     
 
@@ -46,6 +50,8 @@ public class Scheduler {
             bookingId = String.valueOf((int) (Math.random() * 900000)); // Generate random 6-digit number
         } while (bookingIds.contains(bookingId)); // Ensure the booking ID is unique
         bookingIds.add(bookingId); // Add the new booking ID to the list
+        EventLog.getInstance().logEvent(new Event("Booking ID generated: "+ bookingId));
+
         return bookingId;
     }
 
@@ -65,10 +71,14 @@ public class Scheduler {
             if (p1.getBookingId().equals(bookingId)) {
                 itr.remove();
                 bookingIds.remove(bookingId);
+                EventLog.getInstance().logEvent(new Event("Appointment canceled for Booking ID: " + bookingId));
                 return true;
+                
             }
         }
+
         return false;
+        
     }
 
     // REQUIRES: !(new date < current date)
@@ -85,6 +95,9 @@ public class Scheduler {
                 listOfPatients.remove(i); 
                 patient.setAppointmentDate(newAppointmentDate); 
                 insertPatientInSortedOrder(patient); 
+                EventLog.getInstance().logEvent(new Event("Appointment rescheduled for Booking ID: " + bookingId +
+                " from " + patient.getAppointementDate() + " to " + newAppointmentDate));
+            
                 return true;
             }
         }
@@ -99,7 +112,9 @@ public class Scheduler {
     public ArrayList<Patient> sortPatientsByPriority() {
         ArrayList<Patient> patientsSorted = new ArrayList<>(listOfPatients); // creates a copy of the original list
         Collections.sort(patientsSorted); // sorts it out using compare to
+        EventLog.getInstance().logEvent(new Event("Patients sorted by priority. Total patients: " + patientsSorted.size()));
         return patientsSorted;
+        
 
     }
 
@@ -113,15 +128,21 @@ public class Scheduler {
             Patient nextPatient = sortedPatients.get(0); // gets the first element in the list and removes it
                                                          // considering as treated
             listOfPatients.remove(nextPatient);
+            EventLog.getInstance().logEvent(new Event("Patient treated: " + nextPatient.getPatientName() +
+            ", Emergency level: " + nextPatient.getLevelOfEmergency()));
         }
     }
 
     public ArrayList<Patient> getScheduledPatients() {
+        EventLog.getInstance().logEvent(new Event("Scheduled patients list accessed. Total: " + listOfPatients.size()));
         return new ArrayList<>(this.listOfPatients);
+        
     }
     
     public void setListOfPatients(ArrayList<Patient> newList) {
         this.listOfPatients = newList;
+        EventLog.getInstance().logEvent(new Event("Patient list replaced. New size: " + newList.size()));
+
     }
 
 }

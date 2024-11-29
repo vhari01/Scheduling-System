@@ -192,10 +192,10 @@ public class HospitalScheduler {
 
     @SuppressWarnings("methodlength")
     public void reschedulePatient() {
-        sc.nextLine(); 
+        sc.nextLine();
         System.out.println("Enter booking ID:");
         String bookingId = sc.nextLine();
-    
+
         boolean bookingExists = false;
         for (Patient patient : schedule.getScheduledPatients()) {
             if (patient.getBookingId().equals(bookingId)) {
@@ -203,23 +203,23 @@ public class HospitalScheduler {
                 break;
             }
         }
-    
+
         if (!bookingExists) {
             System.out.println("Invalid ID. Please check your ID and try again.");
             return;
         }
-    
+
         System.out.println("Enter the new appointment date (YYYY-MM-DD):");
         String dateInput = sc.nextLine();
         LocalDate newAppointmentDate;
-    
+
         try {
             newAppointmentDate = LocalDate.parse(dateInput);
         } catch (Exception e) {
             System.out.println("Invalid date format. Please enter the date in YYYY-MM-DD format.");
             return;
         }
-    
+
         // Attempt to reschedule with the valid booking ID and date
         boolean rescheduled = schedule.rescheduleAppointment(bookingId, newAppointmentDate);
         if (rescheduled) {

@@ -42,6 +42,7 @@ public class Patient implements Comparable<Patient> {
 
     public String getPatientName() {
         return this.patientName;
+        
     }
 
     // Getters and setters for patient's age
