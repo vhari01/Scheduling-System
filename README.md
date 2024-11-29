@@ -41,3 +41,65 @@ PHASE 3:
 - You can also save the current application status by clicking on the "Save" button.
 - You can Load the last saved application staus by clicking on the "Load" button (only works if you have saved previously).
 - You can exit the application by clicking on the "Exit" button.
+
+
+# Phase 4: Task 2
+Fri Nov 29 01:44:46 PST 2024
+Booking ID generated: 676748
+
+Fri Nov 29 01:44:46 PST 2024
+Patient reordered: as
+
+Fri Nov 29 01:44:46 PST 2024
+Patient added: as, Booking ID: 676748
+
+Fri Nov 29 01:45:01 PST 2024
+Scheduled patients list accessed. Total: 1
+
+Fri Nov 29 01:45:03 PST 2024
+Patient reordered: as
+
+Fri Nov 29 01:45:03 PST 2024
+Appointment rescheduled for Booking ID: 676748 from 2024-12-26 to 2024-12-26
+
+Fri Nov 29 01:45:15 PST 2024
+Scheduled patients list accessed. Total: 1
+
+Fri Nov 29 01:45:16 PST 2024
+Appointment canceled for Booking ID: 676748
+
+Fri Nov 29 01:45:21 PST 2024
+Patients sorted by priority. Total patients: 0
+
+Fri Nov 29 01:45:23 PST 2024
+Patients sorted by priority. Total patients: 0
+
+Fri Nov 29 01:45:45 PST 2024
+Booking ID generated: 809052
+
+Fri Nov 29 01:45:45 PST 2024
+Patient reordered: bc
+ 
+Fri Nov 29 01:45:45 PST 2024
+Patient added: bc, Booking ID: 809052
+
+Fri Nov 29 01:45:47 PST 2024
+Patients sorted by priority. Total patients: 1
+
+Fri Nov 29 01:45:48 PST 2024
+Scheduled patients list accessed. Total: 1
+
+Fri Nov 29 01:45:48 PST 2024
+Patients sorted by priority. Total patients: 1
+
+Fri Nov 29 01:45:48 PST 2024
+Patient treated: bc, Emergency level: 4
+
+Fri Nov 29 01:45:49 PST 2024
+Patients sorted by priority. Total patients: 0
+
+Fri Nov 29 01:45:52 PST 2024
+Scheduled patients list accessed. Total: 0
+
+Fri Nov 29 01:45:55 PST 2024
+Program exited by user.
