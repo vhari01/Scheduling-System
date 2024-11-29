@@ -188,6 +188,7 @@ public class HospitalSchedulerGUI extends JFrame {
     private void printEventLogToConsole(EventLog eventLog) {
         for (Event event : eventLog) {
             System.out.println(event);
+            System.out.println(" ");
         }
     }
 
